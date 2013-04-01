@@ -1,5 +1,4 @@
 require 'highchart_options'
-require '/Users/palfvin/pivot_table2/lib/pivot_table'
 
 class Chart < ActiveRecord::Base
   attr_accessible :options, :data_source, :javascript

@@ -13,7 +13,7 @@ describe HighchartOptions do
   it 'should create the expected options' do
     @highchart_options.make_hash.should == {
               chart: {
-            type: 'bar'
+            type: 'line'
         },
         title: {
             text: 'Fruit Consumption'
