@@ -1,4 +1,27 @@
 Botmetrics::Application.routes.draw do
+  get "static_pages/about"
+  get "static_pages/help"
+  root to: 'static_pages#home'
+
+  resources :users do
+    member do
+      get :charts
+    end
+  end
+
+  resources :charts
+
+  match 'auth/developer/callback', to: 'sessions#create'
+
+  match '/signup', to: 'users#new'
+  match '/signin', to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
+
+  match '/help', to: 'static_pages#help'
+  match '/about', to: 'static_pages#about'
+  match '/contact', to: 'static_pages#contact'
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

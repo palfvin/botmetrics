@@ -1,0 +1,18 @@
+<% provide(:title, @chart.id) %>
+<div id='container' style="width:100%; height:200px;"></div>
+<script>
+$(document).ready(function () {
+  $('#container').highcharts( <%= @chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe %> );
+});
+</script>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        Data Source: <%= @chart.data_source %>
+        Options: <%= @chart.options %>
+      </h1>
+    </section>
+    <%= link_to 'Edit', edit_chart_path(@chart.id) %>
+  </aside>
+</div>
