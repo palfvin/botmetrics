@@ -1,5 +1,3 @@
-require '/Users/palfvin/pivot_table2/lib/pivot_table'
-
 describe PivotTable do
 
   let(:symbol_input_table) {[
