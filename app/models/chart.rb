@@ -1,4 +1,5 @@
 require 'highchart_options'
+require File.expand_path('../../classes/pivot_table', __FILE__)
 
 class Chart < ActiveRecord::Base
   attr_accessible :options, :data_source, :javascript
@@ -12,7 +13,7 @@ class Chart < ActiveRecord::Base
       row_index = match.captures[1]
       column_index = match.captures[0]
       value_index = match.captures[2]
-      pt = PivotTable.new(gs.rows, row_index.to_i, column_index.to_i, value_index.to_i)
+      pt = PivotTable.new(gs.rows, row_index: row_index.to_i, col_index: column_index.to_i, val_index: value_index.to_i)
       rows = pt.pivot()
     else
       rows = gs.rows

@@ -14,8 +14,12 @@ describe PivotTable do
       [3, :r2, :c1],
       [4, :r2, :c2]]}
 
+  let(:header_options) { {row_index: 1, col_index: 2, val_index: 0}  }
+
+  let(:headerless_options) { header_options.merge( { headers: false} ) }
+
   it "should pivot a basic 2x3 table" do
-    pt = PivotTable.new(symbol_input_table, 1, 2, 0)
+    pt = PivotTable.new(symbol_input_table, headerless_options )
     pivoted_table = [
       [nil, :c1, :c2],
       [:r1, :a, :b],
@@ -24,16 +28,16 @@ describe PivotTable do
   end
 
   it "should pivot a table with count" do
-    pt = PivotTable.new(symbol_input_table*2, 1, 2, 0)
+    pt = PivotTable.new(symbol_input_table*2, headerless_options )
     pivoted_table = [
       [nil, :c1, :c2],
       [:r1, 2, 2],
       [:r2, 2, 2]]
-    pt.pivot(:sum).should == pivoted_table
+    pt.pivot(:count).should == pivoted_table
   end
 
   it "should pivot a table with average" do
-    pt = PivotTable.new(numeric_input_table*2, 1, 2, 0)
+    pt = PivotTable.new(numeric_input_table*2, headerless_options )
     pivoted_table = [
       [nil, :c1, :c2],
       [:r1, 2, 4],

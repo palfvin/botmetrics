@@ -2,7 +2,7 @@ require 'highchart_options'
 
 describe HighchartOptions do
   let(:sample_array) { # Taken from Highcharts documentation
-    [['Fruit eaten', 'Apples', 'Bananas', 'Oranges'],['Jane', 1, 0, 4], ['John', 5, 7, 3]] }
+    [[nil, 'Apples', 'Bananas', 'Oranges'],['Jane', 1, 0, 4], ['John', 5, 7, 3]] }
 
   before do
     @highchart_options = HighchartOptions.new(sample_array, { title: 'Fruit Consumption' })
@@ -19,12 +19,7 @@ describe HighchartOptions do
             text: 'Fruit Consumption'
         },
         xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
-        },
-        yAxis: {
-            title: {
-                text: 'Fruit eaten'
-            }
+            categories: ['Apples', 'Bananas', 'Oranges'],
         },
         series: [{
             name: 'Jane',

@@ -6,7 +6,7 @@ class HighchartOptions
   end
 
   def make_hash
-    {
+      {
         chart: {
             type: @options[:chart_type]||'line'
         },
@@ -14,12 +14,7 @@ class HighchartOptions
             text: @options[:title]
         },
         xAxis: {
-            categories: @rows[0][1..-1]
-        },
-        yAxis: {
-            title: {
-                text: @rows[0][0]
-            }
+            categories: @rows[0][1..-1],
         },
         series: @rows[1..-1].collect {|row| {name: row[0], data: row[1..-1] } }
       }
