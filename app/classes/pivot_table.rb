@@ -8,6 +8,7 @@ class PivotTable
     @headers = options.has_key?(:headers) ? options[:headers] : true
     @row_headers = headers(@row_index)
     @col_headers = headers(@col_index)
+
   end
 
   def pivot(aggregator = :max)
@@ -20,9 +21,9 @@ class PivotTable
 
   def aggregate(row_val, col_val, aggregator)
     vals = []
-    @table.each {|row|
+    data_rows.each {|row|
       vals << row[@val_index] if row[@row_index]==row_val and row[@col_index]==col_val}
-    self.send(aggregator, vals)
+    self.send(aggregator, vals) unless vals.length == 0
   end
 
   def corner_label
@@ -32,16 +33,14 @@ class PivotTable
   def top_row ; @table[0] ; end
 
   def headers(index)
-    cols(index).uniq
+    cols(index).uniq.sort
   end
 
   def data_rows
-    puts "@headers = #{@headers}"
     @headers ? @table[1..-1] : @table
   end
 
   def cols(index)
-    puts "data_rows = #{data_rows}"
     data_rows.collect {|row| row[index]}
   end
 
@@ -50,7 +49,7 @@ class PivotTable
   end
 
   def sum(array)
-    array.inject(0,:+)
+    array.inject(0) {|memo, obj| is_number?(obj) ? memo+obj : memo}
   end
 
   def count(array)
@@ -58,7 +57,15 @@ class PivotTable
   end
 
   def average(array)
-    sum(array)/count(array)
+    sum(array)/count_of_numbers(array) rescue nil
+  end
+
+  def count_of_numbers(array)
+    array.count {|v| is_number?(v)}
+  end
+
+  def is_number?(v)
+    true if Float(v) rescue false
   end
 
 end
