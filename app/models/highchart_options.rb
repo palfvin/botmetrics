@@ -1,30 +1,29 @@
 class HighchartOptions
 
-  def initialize(rows, params = {})
+  attr_reader :options
+
+  NON_HEADER_RANGE = 1..-1
+
+  def initialize(title, rows, options = {})
+    @title = title
     @rows = rows
-    @params = params
-    @params[:headers] = true unless @params.key?(:headers)
-    @headers = @params[:headers]
+    @options = options
+    make_hash
   end
 
+  private
+
   def series
-    start_index = @headers ? 1 : 0
-    @rows[start_index..-1].each_with_index.collect do |row, index|
-      {name: @headers ? row[0] : "Series #{index}" , data: row[start_index..-1] }
+    @rows[NON_HEADER_RANGE].each.collect do |row|
+      {name: row[0], data: row[NON_HEADER_RANGE] }
     end
   end
 
   def make_hash()
-    hco = {
-      chart: {
-          type: @params[:chart_type]||'column'
-      },
-      title: {
-          text: @params[:title]
-      },
-      series: series
-    }
-    hco.merge({xAxis: { categories: @rows[0][1..-1] }}) if @headers
+    @options.update('title.text', @title) if !@options.path_exists?('title.text')
+    @options.update('chart.type', 'column') if !@options.path_exists?('chart.type')
+    @options.update('xAxis.categories', @rows[0][NON_HEADER_RANGE]) if !@options.path_exists?('xAxis.categories')
+    @options.update('series', series) if !@options.path_exists?('series')
   end
 
 end

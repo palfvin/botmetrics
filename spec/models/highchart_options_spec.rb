@@ -5,13 +5,13 @@ describe HighchartOptions do
     [[nil, 'Apples', 'Bananas', 'Oranges'],['Jane', 1, 0, 4], ['John', 5, 7, 3]] }
 
   before do
-    @highchart_options = HighchartOptions.new(sample_array, { title: 'Fruit Consumption' })
+    @highchart_options = HighchartOptions.new('Fruit Consumption', sample_array, HashWithPathUpdate.new())
   end
 
   subject @highchart_options
 
   it 'should create the expected options' do
-    @highchart_options.make_hash.should == {
+    @highchart_options.options.should == {
               chart: {
             type: 'column'
         },

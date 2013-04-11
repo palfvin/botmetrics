@@ -1,13 +1,10 @@
 class ChartScript
 
-  attr_accessor :chart_type, :title
   attr_reader :rows, :options
-
-  OPTION_SYMS = [:chart_type, :title]
 
   def initialize(rows)
     @rows = rows
-    @options = {}
+    @options = HashWithPathUpdate.new()
   end
 
   def pivot(aggregator, row, col, val, headers = true)
@@ -32,16 +29,11 @@ class ChartScript
     end
   end
 
-  def interpret(string)
-    eval(string)
-    build_options
-  end
+  def set(path, val)
+    @options.update(path, val) ; end
 
-  def build_options
-    OPTION_SYMS.each do |sym|
-      @options[sym] = self.send(sym) if self.send(sym)
-    end
-  end
+  def interpret(string)
+    eval(string) ; end
 
 end
 

@@ -1,6 +1,7 @@
 require 'highchart_options'
 require File.expand_path('../../classes/pivot_table', __FILE__)
 require File.expand_path('../../classes/chart_script', __FILE__)
+require File.expand_path('../../classes/hash_with_path_update', __FILE__)
 
 
 class Chart < ActiveRecord::Base
@@ -11,17 +12,12 @@ class Chart < ActiveRecord::Base
 
   def generate_chart_JS
     gs = GoogleSpreadsheet.new(self.data_source)
-    rows = gs.rows
-    params = { title: gs.title }
-    if self.options != ""
-      chart_script = ChartScript.new(rows)
-      chart_script.interpret(self.options)
-      rows = chart_script.rows
-      params.merge!(chart_script.options)
-      puts params.inspect
-    end
-    options = HighchartOptions.new(rows, params)
-    self.javascript = options.make_hash.to_json
+    chart_script = ChartScript.new(gs.rows)
+    chart_script.interpret(self.options)
+    rows = chart_script.rows
+    highchart_options = chart_script.options
+    options = HighchartOptions.new(gs.title, rows, highchart_options)
+    self.javascript = options.options.to_json
   end
 
 end

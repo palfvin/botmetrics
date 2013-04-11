@@ -16,21 +16,25 @@ describe ChartScript do
   it "should handle a basic pivot DSL with :max" do
     conversion = "
       pivot :max, 1, 2, 0, false
-      self.chart_type = 'column'
-      self.title = 'Test Title'"
+      set 'chart.type', 'column'
+      set 'title.text', 'Test Title'"
     table_dsl = ChartScript.new(symbol_input_table)
     table_dsl.interpret(conversion)
     table_dsl.rows.should == [
       [nil, :c1, :c2],
       [:r1, :a, :b],
       [:r2, :c, :d]]
+    table_dsl.options.should == {
+      chart: {type: 'column'},
+      title: {text: 'Test Title'}
+    }
   end
 
   it "should handle a basic pivot DSL with :average" do
     conversion = "
       pivot :average, 1, 2, 0, false
-      self.chart_type = 'column'
-      self.title = 'Test Title'"
+      set 'chart.type', 'column'
+      set 'title.text', 'Test Title'"
     table_dsl = ChartScript.new(numeric_input_table*2)
     table_dsl.interpret(conversion)
     table_dsl.rows.should == [
