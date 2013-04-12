@@ -20,10 +20,24 @@ class HighchartOptions
   end
 
   def make_hash()
-    @options.update('title.text', @title) if !@options.path_exists?('title.text')
-    @options.update('chart.type', 'column') if !@options.path_exists?('chart.type')
-    @options.update('xAxis.categories', @rows[0][NON_HEADER_RANGE]) if !@options.path_exists?('xAxis.categories')
-    @options.update('series', series) if !@options.path_exists?('series')
+    set('title.text', @title)
+    set('xAxis.categories', @rows[0][NON_HEADER_RANGE])
+    set('series', series)
+    check_corner_label
+  end
+
+  def set(path, val)
+    @options.update(path, val) if !@options.path_exists?(path)
+  end
+
+  def corner
+    @rows[0][0] ; end
+
+  def check_corner_label
+    if corner && (match = corner.match(/([^(]*)\(([^\\]*)\\([^\\]*)\)/))
+      set('xAxis.title.text', match.captures[2].strip)
+      set('yAxis.title.text', match.captures[0].strip)
+    end
   end
 
 end

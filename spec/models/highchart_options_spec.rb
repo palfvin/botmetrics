@@ -2,7 +2,7 @@ require 'highchart_options'
 
 describe HighchartOptions do
   let(:sample_array) { # Taken from Highcharts documentation
-    [[nil, 'Apples', 'Bananas', 'Oranges'],['Jane', 1, 0, 4], ['John', 5, 7, 3]] }
+    [['Consumption(People \ Fruit)', 'Apples', 'Bananas', 'Oranges'],['Jane', 1, 0, 4], ['John', 5, 7, 3]] }
 
   before do
     @highchart_options = HighchartOptions.new('Fruit Consumption', sample_array, HashWithPathUpdate.new())
@@ -12,15 +12,16 @@ describe HighchartOptions do
 
   it 'should create the expected options' do
     @highchart_options.options.should == {
-              chart: {
-            type: 'column'
-        },
         title: {
             text: 'Fruit Consumption'
         },
         xAxis: {
             categories: ['Apples', 'Bananas', 'Oranges'],
+            title: {text: 'Fruit'}
         },
+        yAxis: {
+          title: {text: 'Consumption'}
+          },
         series: [{
             name: 'Jane',
             data: [1, 0, 4]

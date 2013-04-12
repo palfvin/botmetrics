@@ -8,7 +8,6 @@ class ChartScript
   end
 
   def pivot(aggregator, row, col, val, headers = true)
-    puts "Aggregator = #{aggregator}"
     pivot_table = PivotTable.new(@rows, row_index: row, col_index: col, val_index: val, headers: headers)
     @rows = pivot_table.pivot(aggregator)
   end

@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130329150929) do
+ActiveRecord::Schema.define(:version => 20130411162839) do
 
   create_table "charts", :force => true do |t|
     t.string   "data_source"
-    t.string   "options"
+    t.text     "options"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.text     "javascript"

@@ -1,5 +1,5 @@
 <% provide(:title, @chart.id) %>
-<div id='container' style="width:45%; height:200px;"></div>
+<div id='container' style="width:45%; height:300px;"></div>
 <script>
 $(document).ready(function () {
   $('#container').highcharts( <%= @chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe %> );
