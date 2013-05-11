@@ -4,7 +4,7 @@ describe "dashboards/show.html.erb" do
 
   before do
     @user = FactoryGirl.create(:user)
-    @dashboards = (1..5).collect { FactoryGirl.create(:dashboard, user: @user) }
+    @dashboards = (1..5).collect {|i| FactoryGirl.create(:dashboard, user: @user, name: "Dashboard #{i}") }
     @dashboard = @dashboards[0]
     @charts = (1..5).collect do
       chart = FactoryGirl.create(:chart, user: @user, name: "Chart #{rand(1000)}")
@@ -24,7 +24,7 @@ describe "dashboards/show.html.erb" do
 
   it "displays the dashboards owned by the user" do
     visit dashboards_user_path(@user)
-    @dashboards.each {|dashboard| page.should have_content("Dashboard #{dashboard.id}") }
+    @dashboards.each {|dashboard| page.should have_content(dashboard.name) }
   end
 
   it "displays the dashboard name and included charts" do

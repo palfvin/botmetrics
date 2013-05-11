@@ -16,8 +16,10 @@ class Chart < ActiveRecord::Base
     chart_script.interpret(self.options)
     rows = chart_script.rows
     highchart_options = chart_script.options
-    self.name = highchart_options[:title][:text] if highchart_options.path_exists?('title.text')
-    self.name = gs.title if self.name.blank?
+    if self.name.blank?
+      self.name = (highchart_options[:title][:text] if highchart_options.path_exists?('title.text')) ||
+        gs.title
+    end
     options = HighchartOptions.new(self.name, rows, highchart_options)
     self.javascript = options.options.to_json
   end
