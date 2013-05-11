@@ -1,0 +1,9 @@
+<h2>My Dashboards</h2>
+<%= link_to('Create Dashboard', new_dashboard_path, class: 'btn') %><br><br>
+<table>
+  <tr>
+    <th>Name</th>
+    <th># Charts</th>
+  </tr>
+<div><%= render @dashboards %></div>
+</table>

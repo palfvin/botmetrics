@@ -6,6 +6,7 @@
         <ul class="nav pull-right">
           <% if current_user %>
             <li><%= link_to "Charts", charts_user_path(current_user) %></li>
+            <li><%= link_to "Dashboards", dashboards_user_path(current_user) %></li>
           <% end %>
           <li><%= link_to "Help", help_path %></li>
           <% if current_user %>

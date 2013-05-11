@@ -1,0 +1,8 @@
+<h1><%= @dashboard.name %></h1>
+
+<div><%= render @dashboard.charts %></div>
+
+<p>
+  <%= link_to 'Edit', edit_dashboard_path(@dashboard) %> |
+  <%= link_to 'All Products', dashboards_path %>
+</p>

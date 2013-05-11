@@ -1,4 +1,7 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :developer unless Rails.env.production?
-  provider :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET']
+  production = Rails.env.production?
+  provider :developer unless production
+  provider :facebook,
+    ENV[production ? 'FACEBOOK_KEY' : 'FACEBOOK_LOCAL_KEY'],
+    ENV[production ? 'FACEBOOK_SECRET' : 'FACEBOOK_LOCAL_SECRET']
 end

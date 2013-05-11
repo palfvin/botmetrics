@@ -7,9 +7,13 @@ Botmetrics::Application.routes.draw do
     member do
       get :charts
     end
+    member do
+      get :dashboards
+    end
   end
 
   resources :charts
+  resources :dashboards
 
   match 'auth/developer/callback', to: 'sessions#create'
 

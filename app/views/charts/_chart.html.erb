@@ -1,3 +1,20 @@
-<li>
-  <span class="link"><%= link_to "Chart #{chart.id}", chart_path(chart.id) %></span>
-</li>
+
+
+<tr>
+<td>
+  <span class="link"><%= link_to "#{chart.name}", chart_path(chart.id) %></span>
+</td>
+<td>
+  <div id=<%= "container_#{chart.id}" -%> style="width:200px; height:150px;"></div>
+<script>
+$(document).ready(function () {
+  $('<%= "#container_#{chart.id}"-%>').highcharts( <%= chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if chart.javascript %> );
+});
+</script>
+</div>
+</td>
+</tr>
+
+
+
+

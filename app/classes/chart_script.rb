@@ -8,14 +8,19 @@ class ChartScript
   end
 
   def pivot(aggregator, row, col, val, headers = true)
-    pivot_table = PivotTable.new(@rows, row_index: row, col_index: col, val_index: val, headers: headers)
+    pivot_table = PivotTable.new(@rows, row: row, col: col, val: val, headers: headers)
     @rows = pivot_table.pivot(aggregator)
   end
 
+  def pivot2(options = {})
+    pivot_table = PivotTable.new(@rows, options)
+    @rows = pivot_table.pivot(options[:aggregator])
+  end
+
   def filter(filter_body)
-    predicate = eval("lambda {|row| #{filter_body} }")
+    predicate = eval("lambda {|row, index| #{filter_body} }")
     (@rows.length-1).downto(0) do |index|
-      @rows.delete_at(index) if !predicate.call(@rows[index]) rescue true
+      @rows.delete_at(index) if !predicate.call(@rows[index], index) rescue true
     end
   end
 

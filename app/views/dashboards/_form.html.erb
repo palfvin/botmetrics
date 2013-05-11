@@ -1,0 +1,33 @@
+<%= form_for(@dashboard) do |f| %>
+  <% if @dashboard.errors.any? %>
+    <div class="error_messages">
+      <h2><%= pluralize(@dashboard.errors.count, "error") %> prohibited this dashboard from being saved:</h2>
+
+      <ul>
+      <% @dashboard.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <br>
+    <%= f.label 'Dashboard name', :style => :bold %>
+    <%= f.text_field :name %><br>
+  </div>
+  
+  <div class="field">
+    Contained charts
+    <%= hidden_field_tag "dashboard[chart_ids][]", nil %>
+    <% current_user.charts.each do |chart| %>
+      <div class="checkbox">
+      <%= check_box_tag "dashboard[chart_ids][]", chart.id, @dashboard.chart_ids.include?(chart.id), id: dom_id(chart) -%>
+      <%= label_tag dom_id(chart), chart.name %></div>
+
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -4,7 +4,7 @@ class ChartsController < ApplicationController
 
   def create
     @chart = current_user.charts.build(params[:chart])
-    @chart.generate_chart_JS
+    @chart.prepare_to_save
     if @chart.save
       flash[:success] = "Chart created"
       redirect_to @chart
@@ -27,7 +27,7 @@ class ChartsController < ApplicationController
 
   def update
     @chart.update_attributes(params[:chart])
-    @chart.generate_chart_JS
+    @chart.prepare_to_save
     if @chart.save
       flash[:success] = "Chart updated"
       redirect_to @chart

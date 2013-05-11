@@ -2,13 +2,28 @@ class PivotTable
 
   def initialize(rows, options)
     @table = rows
-    @row_index = options[:row_index]
-    @col_index = options[:col_index]
-    @val_index = options[:val_index]
+    @options = options
     check_input_validity
-    @headers = options.has_key?(:headers) ? options[:headers] : true
-    @row_headers = headers(@row_index)
-    @col_headers = headers(@col_index)
+    set_up_headers
+  end
+
+  def set_up_headers
+    @headers = @options.has_key?(:headers) ? @options[:headers] : true
+    @row_headers = headers(row_accessor)
+    @col_headers = headers(col_accessor)
+    @col_headers.sort_by! &@options[:col_sort_by] if @options[:col_sort_by]
+  end
+
+  def row_accessor
+    @options[:row]
+  end
+
+  def col_accessor
+    @options[:col]
+  end
+
+  def val_accessor
+    @options[:val]
   end
 
   def check_input_validity
@@ -26,7 +41,7 @@ class PivotTable
   def aggregate(row_val, col_val, aggregator)
     vals = []
     data_rows.each {|row|
-      vals << get(row, @val_index) if get(row, @row_index)==row_val and get(row,@col_index)==col_val}
+      vals << get(row, val_accessor) if get(row, row_accessor)==row_val and get(row,col_accessor)==col_val}
     self.send(aggregator, vals) unless vals.length == 0
   end
 
@@ -35,7 +50,7 @@ class PivotTable
     if @headers.is_a?(Proc)
       row_header, col_header, val_header = @headers.call[:row], @headers.call[:col], @headers.call[:val]
     else
-      row_header, col_header, val_header = get(top_row, @row_index), get(top_row, @col_index), get(top_row, @val_index)
+      row_header, col_header, val_header = get(top_row, row_accessor), get(top_row, col_accessor), get(top_row, val_accessor)
     end
     "#{val_header}(#{row_header}\\#{col_header})"
   end

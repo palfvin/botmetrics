@@ -14,6 +14,7 @@ describe Chart do
   it { should respond_to(:options) }
   it { should respond_to(:javascript) }
   it { should respond_to(:user_id) }
+  it { should respond_to(:name) }
 
   describe "when user_id is not present" do
     before { @chart.user_id = nil }

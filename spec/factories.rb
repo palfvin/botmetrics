@@ -7,7 +7,18 @@ FactoryGirl.define do
 
   factory :chart do
     data_source 'foo'
+    name 'mychart'
     user
+  end
+
+  factory :dashboard do
+    name "New Dashboard"
+    user
+  end
+
+  factory :dashboard_element do
+    dashboard
+    chart
   end
 
 end

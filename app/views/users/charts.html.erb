@@ -1,0 +1,20 @@
+<h2>My Charts</h2>
+<%= link_to('Create Chart', new_chart_path, class: 'btn') %><br><br>
+<table>
+<tr>
+  <th>Name</th>
+  <th>Last Updated</th>
+</tr>
+<% @charts.each do |chart| %>
+<tr>
+  <td>
+  <span class="link"><%= link_to chart.name, chart_path(chart) %></span>
+</td>
+<td>
+  <%= chart.updated_at %>
+</td>
+<tr>
+  <% end %>
+
+</table>
+

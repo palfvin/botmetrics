@@ -19,12 +19,12 @@ describe PivotTable do
   let(:corner_result) {'Value(Row\Column)'}
   let(:corner_result_lambda) {'ValueL(RowL\ColumnL)'}
 
-  let(:header_options) { {row_index: 1, col_index: 2, val_index: 0}  }
+  let(:header_options) { {row: 1, col: 2, val: 0}  }
 
   let(:header_options_with_lambdas) { {
-    row_index: lambda {|r| r[1]},
-    col_index: lambda {|r| r[2]},
-    val_index: lambda {|r| r[0]},
+    row: lambda {|r| r[1]},
+    col: lambda {|r| r[2]},
+    val: lambda {|r| r[0]},
     headers: lambda { {row: 'RowL', col: 'ColumnL', val: 'ValueL'} }
     }}
 
@@ -91,6 +91,17 @@ describe PivotTable do
       [:r1, 1, 2],
       [:r2, 3, nil]]
     pt.pivot(:average).should == pivoted_table
+  end
+
+  it "should sort the column headers in reverse alphabetical order if I specify that" do
+    column_sort = lambda {|obj|
+      {c1: 2, c2: 1}[obj] }
+    pt = PivotTable.new(symbol_input_table, headerless_options.merge({col_sort_by: column_sort}) )
+    pivoted_table = [
+      [nil, :c2, :c1],
+      [:r1, :b, :a],
+      [:r2, :d, :c]]
+    pt.pivot().should == pivoted_table
   end
 
 end

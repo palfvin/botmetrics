@@ -15,7 +15,12 @@ class UsersController < ApplicationController
     @title = 'Charts'
     @user = User.find(params[:id])
     @charts = @user.charts
-    render 'show_charts'
+  end
+
+  def dashboards
+    @title = 'Dashboards'
+    @user = User.find(params[:id])
+    @dashboards = @user.dashboards
   end
 
 end

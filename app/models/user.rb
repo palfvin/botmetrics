@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessible :name
   has_many :charts, dependent: :destroy
+  has_many :dashboards, dependent: :destroy
 
   def self.from_omniauth(auth)
     where(auth.slice('provider', 'uid')).first || create_from_omniauth(auth)
