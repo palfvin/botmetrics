@@ -49,6 +49,8 @@ class PivotTable
     return nil if !@headers
     if @headers.is_a?(Proc)
       row_header, col_header, val_header = @headers.call[:row], @headers.call[:col], @headers.call[:val]
+    elsif @headers.is_a?(Hash)
+      row_header, col_header, val_header = @headers[:row], @headers[:col], @headers[:val]
     else
       row_header, col_header, val_header = get(top_row, row_accessor), get(top_row, col_accessor), get(top_row, val_accessor)
     end

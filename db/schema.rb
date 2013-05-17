@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130505211335) do
+ActiveRecord::Schema.define(:version => 20130515184748) do
 
   create_table "charts", :force => true do |t|
     t.string   "data_source"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20130505211335) do
     t.integer  "dashboard_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "top"
+    t.integer  "left"
   end
 
   create_table "dashboards", :force => true do |t|

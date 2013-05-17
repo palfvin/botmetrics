@@ -1,0 +1,10 @@
+<style>
+.<%= "containerbig_#{dashboard_element.id}" -%> {
+  position: relative;
+  top: <%= dashboard_element.top -%>px;
+  left: <%= dashboard_element.left -%>px;
+}
+</style>
+<div class=<%="containerbig_#{dashboard_element.id}" -%>>
+<%= render dashboard_element.chart %>
+</div>

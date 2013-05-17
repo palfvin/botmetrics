@@ -1,19 +1,16 @@
-
-
-<tr>
-<td>
+<div id=<%= "containerbig_#{chart.id}" -%>>
   <span class="link"><%= link_to "#{chart.name}", chart_path(chart.id) %></span>
-</td>
-<td>
-  <div id=<%= "container_#{chart.id}" -%> style="width:200px; height:150px;"></div>
+  <%= chart_counter if defined?(chart_counter) %>
+  <div id=<%= "container_#{chart.id}" -%> style="width:400px; height:300px;"></div>
+</div>
 <script>
+$(function() {
+    $( '<%= "#containerbig_#{chart.id}"-%>' ).draggable();
+  });
 $(document).ready(function () {
   $('<%= "#container_#{chart.id}"-%>').highcharts( <%= chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if chart.javascript %> );
 });
 </script>
-</div>
-</td>
-</tr>
 
 
 

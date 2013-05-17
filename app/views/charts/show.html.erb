@@ -1,12 +1,15 @@
 <% provide(:title, @chart.name) %>
-<div id='container' style="width:45%; height:300px;"></div>
-<script>
+<div id="container" class="ui-widget-content" style="width:45%; height:350px;"></div>
+ <script>
+$(function() {
+    $( "#container" ).draggable();
+  });
 $(document).ready(function () {
   $('#container').highcharts( <%= @chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if @chart.javascript %> );
 });
 </script>
 <div class="row">
   <aside class="span4">
-    <%= link_to 'Edit', edit_chart_path(@chart.id) %>
+    <%= link_to 'Edit 23', edit_chart_path(@chart.id) %>
   </aside>
 </div>
