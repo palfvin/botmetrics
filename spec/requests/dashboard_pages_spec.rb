@@ -6,7 +6,7 @@ describe "dashboards/show.html.erb" do
     @user = FactoryGirl.create(:user)
     @dashboards = (1..5).collect {|i| FactoryGirl.create(:dashboard, user: @user, name: "Dashboard #{i}") }
     @dashboard = @dashboards[0]
-    @charts = (1..5).collect do
+    @charts = (1..5).collect do |i|
       chart = FactoryGirl.create(:chart, user: @user, name: "Chart #{rand(1000)}")
       FactoryGirl.create(:dashboard_element, dashboard: @dashboard, chart: chart)
       chart

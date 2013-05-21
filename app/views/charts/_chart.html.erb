@@ -1,14 +1,11 @@
-<div id=<%= "containerbig_#{chart.id}" -%>>
-  <span class="link"><%= link_to "#{chart.name}", chart_path(chart.id) %></span>
+<div id=<%= "chartcontainer_#{chart.id}" -%> style="height:100%">
+  <span class="link" style="position:absolute;z-index:1001"><%= link_to "#{chart.name}", chart_path(chart.id) %></span>
   <%= chart_counter if defined?(chart_counter) %>
-  <div id=<%= "container_#{chart.id}" -%> style="width:400px; height:300px;"></div>
+  <div id=<%= "chart_#{chart.id}" -%> style="height:100%"></div>
 </div>
 <script>
-$(function() {
-    $( '<%= "#containerbig_#{chart.id}"-%>' ).draggable();
-  });
 $(document).ready(function () {
-  $('<%= "#container_#{chart.id}"-%>').highcharts( <%= chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if chart.javascript %> );
+  $('<%= "#chart_#{chart.id}"-%>').highcharts( <%= chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if chart.javascript %> );
 });
 </script>
 

@@ -4,8 +4,8 @@ class GoogleSpreadsheet
 
   attr_reader :title, :rows
 
-  def initialize(key, title = nil)
-    session = GoogleDrive.login(ENV['GOOGLE_NAME'], ENV['GOOGLE_PASSWORD'])
+  def initialize(key, title = nil, source = GoogleDrive)
+    session = source.login(ENV['GOOGLE_NAME'], ENV['GOOGLE_PASSWORD'])
     spreadsheet = session.spreadsheet_by_key(key)
     worksheet = title ? spreadsheet.worksheet_by_title(title) : spreadsheet.worksheets[0]
     @title = worksheet.title

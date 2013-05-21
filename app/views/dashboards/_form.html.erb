@@ -30,22 +30,3 @@
     <%= f.submit %>
   </div>
 <% end %>
-
-<table>
-  <tr>
-    <th>Chart</th>
-    <th>Top</th>
-    <th>Left</th>
-    <th>Update</th>
-  </tr>
-  <% @dashboard.dashboard_elements.each do |de| %>
-  <%= form_for(de) do |f| %>
-    <tr>
-      <td><%= de.chart.name %></td>
-      <td><%= f.text_field :top %></td>
-      <td><%= f.text_field :left %></td>
-      <td><%= f.submit %></td>
-    </tr>
-  <% end %>
-  <% end %>
-</table>

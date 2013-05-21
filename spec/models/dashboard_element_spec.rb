@@ -15,6 +15,8 @@ describe DashboardElement do
   it { should respond_to(:chart) }
   it { should respond_to(:top) }
   it { should respond_to(:left) }
+  it { should respond_to(:width) }
+  it { should respond_to(:height) }
 
   it { should be_valid }
 
