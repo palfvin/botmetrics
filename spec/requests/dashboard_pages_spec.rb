@@ -27,10 +27,9 @@ describe "dashboards/show.html.erb" do
     @dashboards.each {|dashboard| page.should have_content(dashboard.name) }
   end
 
-  it "displays the dashboard name and included charts" do
+  it "displays the dashboard name" do
     visit dashboard_path(@dashboard)
     page.should have_content(@dashboard.name)
-   @charts.each {|chart| page.should have_content(chart.name) }
   end
 
   it "lets you create a new dashboard" do

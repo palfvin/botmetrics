@@ -1,4 +1,6 @@
 class DashboardsController < ApplicationController
+  before_filter :require_authentication, only: [:edit, :update]
+  before_filter :find_dashboard_and_require_authorization, only: [:edit, :update]
 
   def new
     @dashboard = Dashboard.new
@@ -10,6 +12,7 @@ class DashboardsController < ApplicationController
 
   def show
     @dashboard = Dashboard.find(params[:id])
+    @dashboard_owner = dashboard_owner?
   end
 
   def create
@@ -22,7 +25,6 @@ class DashboardsController < ApplicationController
   end
 
   def update
-    @dashboard = Dashboard.find(params[:id])
     if @dashboard.update_attributes(params[:dashboard])
       redirect_to @dashboard, notice: "Successfully updated dashboard."
     else
@@ -30,6 +32,15 @@ class DashboardsController < ApplicationController
     end
   end
 
+  private
 
+  def find_dashboard_and_require_authorization
+    @dashboard = Dashboard.find(params[:id])
+    redirect_to(root_path) unless @dashboard && dashboard_owner?
+  end
+
+  def dashboard_owner?
+    current_user && current_user.id == @dashboard.user_id
+  end
 
 end

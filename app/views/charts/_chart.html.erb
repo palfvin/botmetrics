@@ -1,6 +1,4 @@
 <div id=<%= "chartcontainer_#{chart.id}" -%> style="height:100%">
-  <span class="link" style="position:absolute;z-index:1001"><%= link_to "#{chart.name}", chart_path(chart.id) %></span>
-  <%= chart_counter if defined?(chart_counter) %>
   <div id=<%= "chart_#{chart.id}" -%> style="height:100%"></div>
 </div>
 <script>

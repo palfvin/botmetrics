@@ -1,6 +1,6 @@
 class ChartsController < ApplicationController
-  before_filter :require_login
-  before_filter :correct_user, only: [:edit, :update]
+  before_filter :require_authentication
+  before_filter :set_chart_and_require_authorization, only: [:edit, :update, :show]
 
   def create
     @chart = current_user.charts.build(params[:chart])
@@ -14,7 +14,6 @@ class ChartsController < ApplicationController
   end
 
   def show
-    @chart = Chart.find(params[:id])
   end
 
   def new
@@ -22,7 +21,6 @@ class ChartsController < ApplicationController
   end
 
   def edit
-    @chart = Chart.find(params[:id])
   end
 
   def update
@@ -38,16 +36,9 @@ class ChartsController < ApplicationController
 
   private
 
- def require_login
-    unless current_user
-      flash[:error] = "You must be logged in to access this section"
-      redirect_to signin_path # halts request cycle
-    end
-  end
-
-  def correct_user
+  def set_chart_and_require_authorization
     @chart = Chart.find(params[:id])
-    redirect_to(root_path) unless current_user.id==@chart.user_id
+    flash[:error] = 'Not authorized for that operation' and redirect_to(root_path) unless current_user.id==@chart.user_id
   end
 
 end
