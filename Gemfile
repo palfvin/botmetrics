@@ -13,6 +13,7 @@ gem 'childprocess', '0.3.9'
 gem 'highcharts-rails'
 gem 'omniauth-facebook'
 gem 'google_drive'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'rspec-rails', '2.11.0'

@@ -2,13 +2,10 @@ class UsersController < ApplicationController
 
   before_filter :require_authentication, except: [:new]
   before_filter :require_admin, only: [:index]
-  before_filter :require_authorization, only: [:show, :charts, :dashboards]
+  before_filter :require_authorization, only: [:charts, :dashboards]
 
   def new
-    redirect_to '/auth/developer'
-  end
-
-  def show
+    redirect_to '/auth/developer' if Rails.env.developer?
   end
 
   def index
