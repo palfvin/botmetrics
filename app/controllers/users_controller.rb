@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :require_authorization, only: [:charts, :dashboards]
 
   def new
-    redirect_to '/auth/developer' if Rails.env.developer?
+    redirect_to '/auth/developer' if true || Rails.env.developer?
   end
 
   def index

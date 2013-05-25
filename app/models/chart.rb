@@ -2,6 +2,7 @@ require 'highchart_options'
 require File.expand_path('../../classes/pivot_table', __FILE__)
 require File.expand_path('../../classes/chart_script', __FILE__)
 require File.expand_path('../../classes/hash_with_path_update', __FILE__)
+require 'ostruct'
 
 
 class Chart < ActiveRecord::Base
@@ -11,10 +12,11 @@ class Chart < ActiveRecord::Base
   validates :user_id, presence: true
 
   def prepare_to_save
-    gs = GoogleSpreadsheet.new(self.data_source)
+    gs = self.data_source.blank? ? OpenStruct.new({rows: nil, title: 'Title'}) : GoogleSpreadsheet.new(self.data_source)
     chart_script = ChartScript.new(gs.rows)
     chart_script.interpret(self.options)
     rows = chart_script.rows
+    puts :prepare_to_save, rows.inspect
     highchart_options = chart_script.options
     if self.name.blank?
       self.name = (highchart_options[:title][:text] if highchart_options.path_exists?('title.text')) ||

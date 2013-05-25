@@ -3,15 +3,26 @@ class User < ActiveRecord::Base
   has_many :charts, dependent: :destroy
   has_many :dashboards, dependent: :destroy
 
+  EMAIL_WHITELIST = ['palfvin@gmail.com', 'ealfvin@gmail.com', 'walfvin@gmail.com']
+
   def self.from_omniauth(auth)
-    where(auth.slice('provider', 'uid')).first || create_from_omniauth(auth)
+    if user = where(auth.slice(:provider, :uid)).first
+      user.name = auth[:info][:name]
+      user.email = auth[:info][:email]
+      user.save
+      user
+    else
+      create_from_omniauth(auth) if EMAIL_WHITELIST.include(auth[:info][:email])
+    end
+
   end
 
   def self.create_from_omniauth(auth)
     create! do |user|
-      user.provider = auth['provider']
-      user.uid = auth['uid']
-      user.name = { 'developer' => auth['info']['name'] }[auth['provider']]
+      user.provider = auth[:provider]
+      user.uid = auth[:uid]
+      user.name = auth[:info][:name]
+      user.email = auth[:info][:email]
     end
   end
 

@@ -2,16 +2,18 @@ class HashWithPathUpdate < Hash
 
   SEP_CHAR = '.'
 
-  def update(path, val)
+  def update(path, val, operation = :replace)
     keys = path.split(SEP_CHAR).collect {|k| k.to_sym}
-    last_key_index = keys.length-1
     h = self
-    (0...last_key_index).each do |i|
-      key = keys[i]
+    keys[0...-1].each do |key|
       h[key] = {} if !h.key?(key)
       h = h[key]
     end
-    h[keys[last_key_index]] = val
+    if operation == :append and h.key?(keys[-1])
+      h[keys[-1]] << val
+    else
+      h[keys[-1]] = val
+    end
     self
   end
 
