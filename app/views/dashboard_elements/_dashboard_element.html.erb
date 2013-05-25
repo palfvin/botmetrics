@@ -1,5 +1,5 @@
 <style>
-#<%= "de_#{dashboard_element.id}" -%> {
+<%= "#de_#{dashboard_element.id}" -%> {
   position: absolute;
   top: <%= dashboard_element.top -%>px;
   left: <%= dashboard_element.left -%>px;
@@ -13,13 +13,14 @@
 <div id=<%="de_#{dashboard_element.id}" -%>>
 <%= render dashboard_element.chart %>
 </div>
+<% if @dashboard_owner %>
 <script>
 $(function() {
     var de_id = <%= dashboard_element.id %>;
     var container = $( <%= "de_#{dashboard_element.id}" %> );
     container.resizable({
-//      stop: function(event, ui) {set_size(ui, container.parent().attr('data-de'))}}).draggable({
       stop: function(event, ui) {set_size(ui, de_id)}}).draggable({
       stop: function(event, ui) {set_position(ui, de_id)}});
   });
 </script>
+<% end %>

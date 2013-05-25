@@ -13,6 +13,7 @@ class DashboardsController < ApplicationController
   def show
     @dashboard = Dashboard.find(params[:id])
     @dashboard_owner = dashboard_owner?
+    @skip_footer = true
   end
 
   def create
