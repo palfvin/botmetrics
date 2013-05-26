@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
       user.save
       user
     else
-      create_from_omniauth(auth) if EMAIL_WHITELIST.include(auth[:info][:email])
+      create_from_omniauth(auth) if EMAIL_WHITELIST.include?(auth[:info][:email])
     end
 
   end
