@@ -1,20 +1,15 @@
 class User < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :email
   has_many :charts, dependent: :destroy
   has_many :dashboards, dependent: :destroy
 
-  EMAIL_WHITELIST = ['palfvin@gmail.com', 'ealfvin@gmail.com', 'walfvin@gmail.com']
-
   def self.from_omniauth(auth)
     if user = where(auth.slice(:provider, :uid)).first
-      user.name = auth[:info][:name]
-      user.email = auth[:info][:email]
-      user.save
+      user.update_attributes({name: auth[:info][:name], email: auth[:info][:email]})
       user
     else
-      create_from_omniauth(auth) if EMAIL_WHITELIST.include?(auth[:info][:email])
+      create_from_omniauth(auth)
     end
-
   end
 
   def self.create_from_omniauth(auth)

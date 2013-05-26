@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :user do
     name      "Peter Alfvin"
     provider  'developer'
-    uid       "peter@example.com"
+    uid       "palfvin@gmail.com"
   end
 
   factory :chart do
