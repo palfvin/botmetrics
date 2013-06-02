@@ -15,11 +15,24 @@ class GoogleSpreadsheet
   private
 
   def recognize_and_convert_numbers(array_of_arrays)
-    array_of_arrays.collect {|array| array.collect {|value| is_number_format(value) ? value.to_f : value } }
+    array_of_arrays.collect do |array|
+      array.collect do |value|
+        if is_number_format(value)
+          value.to_f
+        elsif is_date_format(value)
+          Date.strptime(value,'%m/%d/%Y').strftime('%Y-%m-%d')
+        else value
+        end
+      end
+    end
   end
 
   def is_number_format(value)
     value.match(/\A[+-]?\d+?(\.\d+)?\Z/) != nil
+  end
+
+  def is_date_format(value)
+    value.match(/\A[\d]{1,2}\/[\d]{1,2}\/[\d]{2,4}\Z/)
   end
 
 end

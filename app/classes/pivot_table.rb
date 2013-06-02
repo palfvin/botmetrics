@@ -1,14 +1,14 @@
 class PivotTable
 
-  def initialize(rows, options)
+  PIVOT_DEFAULTS = {row: 0, col: 1, val: 2, headers: true, aggregator: :max}
+
+  def initialize(rows)
     @table = rows
-    @options = options
     check_input_validity
-    set_up_headers
   end
 
   def set_up_headers
-    @headers = @options.has_key?(:headers) ? @options[:headers] : true
+    @headers = @options[:headers]
     @row_headers = headers(row_accessor)
     @col_headers = headers(col_accessor)
     @col_headers.sort_by! &@options[:col_sort_by] if @options[:col_sort_by]
@@ -30,19 +30,27 @@ class PivotTable
     raise unless @table
   end
 
-  def pivot(aggregator = :max)
-    [[corner_label]+@col_headers]+@row_headers.collect do |row_val|
-      [row_val] + @col_headers.collect do |col_val|
-        aggregate(row_val, col_val, aggregator)
-      end
+  def pivot(options)
+    @options = PIVOT_DEFAULTS.merge(options)
+    set_up_headers
+    header_row+@row_headers.collect {|row_val| data_row(row_val)}
+  end
+
+  def header_row
+    [[corner_label]+@col_headers]
+  end
+
+  def data_row(row_val)
+    [row_val] + @col_headers.collect do |col_val|
+      aggregate(row_val, col_val)
     end
   end
 
-  def aggregate(row_val, col_val, aggregator)
+  def aggregate(row_val, col_val)
     vals = []
     data_rows.each {|row|
       vals << get(row, val_accessor) if get(row, row_accessor)==row_val and get(row,col_accessor)==col_val}
-    self.send(aggregator, vals) unless vals.length == 0
+    self.send(@options[:aggregator].to_sym, vals) unless vals.length == 0
   end
 
   def corner_label

@@ -15,6 +15,9 @@ gem 'omniauth-facebook'
 gem 'google_drive'
 gem 'newrelic_rpm'
 gem 'thin'
+gem 'coffee-script'
+gem 'therubyracer', '0.11.3', :require => 'v8'
+gem 'underscore-rails'
 
 group :development, :test do
   gem 'rspec-rails', '2.11.0'
