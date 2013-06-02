@@ -5,8 +5,8 @@ describe GoogleSpreadsheet do
 
   describe "worksheet processing" do
     let(:key) { '0Ago7gICK0jzMdGhKMUdWbEV3cFgzTHd2WWxPN1Ftc2c' }
-    let(:expected_contents) { [["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", 1.0, 2.0, 9.0], ["Joe", 3.0, 6.0, 8.0]] }
-    let(:google_drive_rows) {[["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", '1.0', '2.0', '9.0'], ["Joe", '3.0', '6.0', '8.0']]}
+    let(:expected_contents) { [["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", 1.0, '1973-02-01', 9.0], ["Joe", 3.0, 6.0, 8.0]] }
+    let(:google_drive_rows) {[["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", '1.0', '2/1/1973', '9.0'], ["Joe", '3.0', '6.0', '8.0']]}
 
     before :each do
       @google_drive = double('GoogleDrive')

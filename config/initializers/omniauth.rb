@@ -1,3 +1,5 @@
+OmniAuth.logger.level = Logger::WARN
+
 Rails.application.config.middleware.use OmniAuth::Builder do
   production = Rails.env.production?
   provider :developer unless production
