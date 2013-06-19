@@ -1,11 +1,11 @@
 require 'coffee-script'
+require 'date_easter'
 
 class ChartScript
 
   attr_reader :options, :data_sources
 
   def initialize(input_rows)
-    puts "#{self.inspect} created at #{Time.now}"
     @rows = input_rows
     @options = HashWithPathUpdate.new()
   end
@@ -56,13 +56,30 @@ class ChartScript
   def interpret(string)
     if string =~ /\A\/\//
       interpret_js(string)
+    elsif string =~ /\A#/
+      interpret_js(CoffeeScript::compile(string))
     else
       eval(string)
     end; end
 
   private
 
-  SCRIPT_METHODS = [:set, :puts]
+  SCRIPT_METHODS = [:puts]
+
+  def self.convert_string_keys(hash)
+    hash.keys.each do |key|
+      if key.class == String
+        case hash[key]
+        when String, Fixnum, Array
+          hash[key.to_sym] = hash.delete(key)
+        else
+          hash[key.to_sym] = self.convert_string_keys(hash[key])
+          hash.delete(key)
+        end
+      end
+    end
+    hash
+  end
 
   def js_context
     context = V8::Context.new
@@ -78,20 +95,29 @@ class ChartScript
     context
   end
 
+  JS_INIT = "
+    botmetrics.cs = new botmetrics.ChartScript(rows);
+    set = function (path, val) {botmetrics.cs.set(path, val)};
+    pivot = function (options) {botmetrics.cs.pivot(options)};
+    filter = function (filter_body) {botmetrics.cs.filter(filter_body)};
+    sort = function (sort_index, headers) {botmetrics.cs.sort(sort_index, headers)};"
+
   class MyConsole
     def log(obj)
-      puts [[1,2]].inspect
       puts obj.inspect
     end
   end
 
   def interpret_js(script)
     preface = File.read('/Users/palfvin/tmp/pivot_table.js.js')
+    underscore = File.read('/Users/palfvin/.rvm/gems/ruby-1.9.3-p194@rails3tutorial2ndEd/gems/underscore-rails-1.4.4/vendor/assets/javascripts/underscore.js')
     context = js_context
     context['console'] = MyConsole.new
     context['rows'] = @rows
-    @rows = context.eval(preface+script)
-    puts "Rows context is #{context['rows']}"
+    context.eval("botmetrics = {};\n"+underscore+preface+JS_INIT)
+    context.eval(script)
+    @rows = JSON[context.eval('JSON.stringify(botmetrics.cs.rows)')]
+    @options = HashWithPathUpdate[self.class.convert_string_keys(JSON[context.eval('JSON.stringify(botmetrics.cs.options)')])]
   end
 
   def rows=(value)

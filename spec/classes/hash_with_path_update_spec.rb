@@ -7,7 +7,7 @@ describe HashWithPathUpdate do
     hash.update('foo', 'bar').should == {foo: 'bar'}
   end
 
-  it 'should add a key/val pair to a has with a different key' do
+  it 'should add a key/val pair to a hash with a different key' do
     hash = HashWithPathUpdate.new()
     hash[:a] = 1
     hash.update('foo', 'bar').should == { a: 1, foo: 'bar'}

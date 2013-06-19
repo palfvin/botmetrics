@@ -1,99 +1,148 @@
-Array::unique = ->
-  output = {}
-  output[@[key]] = @[key] for key in [0...@length]
-  value for key, value of output
+window.botmetrics = {}
 
-root = exports ? this
+botmetrics.HashWithPathUpdate = class HashWithPathUpdate
 
-root.Botmetrics or= {}
+  constructor: (obj = {}) ->
+    _.extend(this,obj)
 
-class Hash
-  constructor: (@obj) ->
+  path_exists: (path) ->
+    keys = path.split('.')
+    h = @
+    for key in keys
+      if not h[key]?
+        return false
+      else
+        h = h[key]
+    return true
 
-  merge: (obj) ->
-    result = {}
-    for attrname of obj
-      result[attrname] = obj[attrname]
-    for attrname of @obj
-      result[attrname] = @obj[attrname] unless attrname of result
-    return result
+  update: (path, val, operation = 'replace') ->
+    keys = path.split('.')
+    h = @
+    last_key = keys[keys.length-1]
+    for key in keys.slice(0,-1)
+      h[key] = {} if not h[key]
+      h = h[key]
+    if operation == 'append' and h[last_key]?
+      h[last_key].push(val)
+    else
+      h[last_key] = val
+    @
 
-root.Botmetrics.PivotTable = class PivotTable
-
-  PIVOT_DEFAULTS: new Hash({row: 0, col: 1, val: 2, first_data_row: 0, headers: false, aggregator: "max"})
+botmetrics.ChartScript = class ChartScript
 
   constructor: (@rows) ->
-    @check_input_validity()
-    console.log("Rows at constructor")
-    console.log(@rows)
+    @options = new HashWithPathUpdate
 
-  set_up_headers: ->
-    @row_headers = @pivoted_headers(@options.row)
-    @col_headers = @pivoted_headers(@options.col)
-#    @col_headers.sort_by! &@options[:col_sort_by] if @options[:col_sort_by]
-    @header_row = [@corner_label()].concat(@col_headers)
+  interpret: (script) ->
+    context = this
+    preface = "
+      function pivot(){context.pivot.apply(context,arguments)};
+      function set(){context.set.apply(context,arguments)};
+      function filter(){context.filter.apply(context,arguments)};
+      function sort(){context.sort.apply(context,arguments)};"
+    eval("(function (){#{preface}#{script}})()")
 
-  check_input_validity: ->
+  set: (path, val) =>
+    @options.update(path, val)
+
+  pivot: (pivot_options) ->
+    @rows = new PivotTable(@rows).pivot(pivot_options)
+
+  filter: (filter) ->
+    predicate = switch (typeof filter)
+      when 'string' then eval("predicate = function (row, index) {return ( #{filter} )}")
+      when 'function' then filter
+      else raise 'Invalid filter'
+
+    @rows = (@rows[i] for i in [0...@rows.length] when predicate.call(null, @rows[i], i))
+
+  sort: (sort_index, headers = true) ->
+    sort_function = (a, b) ->
+      v1 = a[sort_index]
+      v2 = b[sort_index]
+      return -1 if v1<v2
+      return 1 if v1>v2
+      return 0
+    if headers
+      @rows = [@rows[0]].concat(@rows.slice(1).sort(sort_function))
+    else
+      @rows.sort(sort_function)
+
+botmetrics.PivotTable = class PivotTable
+
+  PIVOT_DEFAULTS: {row: 0, col: 1, val: 2, headers: 0, aggregator: "max"}
+
+  constructor: (@rows) ->
+    @checkInputValidity()
+
+  setUpHeaders: ->
+    @rowHeaders = @pivotedHeaders(@options.row)
+    @colHeaders = @pivotedHeaders(@options.col)
+    @options.columnSort.call(null, @colHeaders) if @options.columnSort?
+    @header_row = [@cornerLabel()].concat(@colHeaders)
+
+  checkInputValidity: ->
     throw new Error('No rows provided') unless @rows
 
   pivot: (options = {}) ->
-    @options = @PIVOT_DEFAULTS.merge(options)
-    @data_rows = @rows.slice(@options.first_data_row)
-    @set_up_headers()
-    console.log("Header row in brackets is #{[[@header_row]]}")
-    [@header_row].concat(([row_val].concat(@data_row(row_val)) for row_val in @row_headers))
+    @options = _.extend({},@PIVOT_DEFAULTS, options)
+    console.log('pivot', options, @options)
+    @dataRows = @rows.slice(@firstDataRow())
+    @setUpHeaders()
+    [@header_row].concat(([rowVal].concat(@dataRow(rowVal)) for rowVal in @rowHeaders))
 
-  data_row: (row_val) ->
-    (@aggregate(row_val, col_val) for col_val in @col_headers)
+  firstDataRow: ->
+    headers = @options.headers
+    switch (typeof headers)
+      when 'object' then return 0   # includes case of headers = null
+      when 'number' then return headers+1
+      else raise 'Invalid headers option'
 
-  aggregate: (row_val, col_val) ->
+  dataRow: (rowVal) ->
+    (@aggregate(rowVal, colVal) for colVal in @colHeaders)
+
+  aggregate: (rowVal, colVal) ->
     vals = []
-    for row in @data_rows
-       vals.push(@get(row, @options.val)) if @get(row, @options.row)==row_val and @get(row,@options.col)==col_val
+    for row in @dataRows
+       vals.push(@get(row, @options.val)) if @get(row, @options.row)==rowVal and @get(row,@options.col)==colVal
     this[@options.aggregator](vals) unless vals.length == 0
 
-  corner_label: ->
+  cornerLabel: ->
     headers = @options.headers
-    return "" if !headers
+    if headers == null then return ""
     [row_name, col_name, val_name] = switch (typeof headers)
       when "object" then [headers.row, headers.col, headers.val]
-      when "number" then [get(@rows[header], @options.row), get(@rows[header], @options.col), get(@rows[header], @options.val)]
-      else throw "Invalid header paramter"
-    "#{val_header}(#{row_header}\\#{col_header})"
+      when "number" then [@get(@rows[headers], @options.row), @get(@rows[headers], @options.col), @get(@rows[headers], @options.val)]
+      else raise "Invalid header parameter"
+    "#{val_name}(#{row_name}\\#{col_name})"
 
-  top_row: ->
-    @rows[0]
-
-  pivoted_headers: (index) ->
-    @cols(index).unique().sort()
+  pivotedHeaders: (index) ->
+    _.unique(@cols(index)).sort()
 
   cols: (index) ->
-    (@get(row,index) for row in @data_rows)
+    (@get(row,index) for row in @dataRows)
 
   max: (array) ->
     array.sort().slice(-1)[0]
 
   sum: (array) ->
-    array.reduce (x, y) -> if @is_number(y) then x+y else x
+    isNumber = @isNumber
+    array.reduce (x, y) -> if isNumber(y) then x+y else x
 
   count: (array) ->
     array.length
 
   average: (array) ->
-    (sum(array)/count_of_numbers(array)).round(2) rescue nil
+    Math.round(@sum(array)/@countOfNumbers(array))
 
-  count_of_numbers: (array) ->
-    array.reduce (x, y) -> if is_number?(v) then x+1 else x
+  countOfNumbers: (array) ->
+    isNumber = @isNumber
+    array.reduce(((x, y) -> if isNumber(y) then x+1 else x), 0)
 
-  is_number: (v) ->
+  isNumber: (v) ->
     (typeof v) == "number"
 
   get: (row, accessor) ->
-    if @is_number(accessor) then row[accessor] else accessor(row)
-
-root.pivot = (options = {}) =>
-  console.log("Before value is #{JSON.stringify(rows)}")
-  root.rows = new root.Botmetrics.PivotTable(rows).pivot(options)
-  console.log("After value is #{JSON.stringify(rows)}")
+    if @isNumber(accessor) then row[accessor] else accessor.call(null, row)
 
 

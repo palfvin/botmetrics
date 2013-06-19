@@ -20,7 +20,7 @@ class GoogleSpreadsheet
         if is_number_format(value)
           value.to_f
         elsif is_date_format(value)
-          Date.strptime(value,'%m/%d/%Y').strftime('%Y-%m-%d')
+          Date.strptime(value,'%m/%d/%Y').strftime('%Y/%m/%d')
         else value
         end
       end

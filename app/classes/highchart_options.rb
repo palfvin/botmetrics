@@ -4,7 +4,7 @@ class HighchartOptions
 
   NON_HEADER_RANGE = 1..-1
 
-  def initialize(title, rows, options = {})
+  def initialize(title, rows, options = HashWithPathUpdate.new)
     @title = title
     @rows = rows
     @options = options

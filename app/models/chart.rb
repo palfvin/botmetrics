@@ -16,7 +16,6 @@ class Chart < ActiveRecord::Base
     chart_script = ChartScript.new(gs.rows)
     chart_script.interpret(self.options)
     rows = chart_script.rows
-    puts :prepare_to_save, rows.inspect
     highchart_options = chart_script.options
     if self.name.blank?
       self.name = (highchart_options[:title][:text] if highchart_options.path_exists?('title.text')) ||

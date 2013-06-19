@@ -16,8 +16,9 @@ gem 'google_drive'
 gem 'newrelic_rpm'
 gem 'thin'
 gem 'coffee-script'
-gem 'therubyracer', '0.11.3', :require => 'v8'
+gem 'therubyracer', :require => 'v8'
 gem 'underscore-rails'
+gem 'date_easter'
 
 group :development, :test do
   gem 'rspec-rails', '2.11.0'
@@ -26,6 +27,8 @@ group :development, :test do
   gem 'spork', '0.9.2'
   gem 'annotate', '2.5.0'
   gem 'quiet_assets'
+  gem "jasminerice", :git => 'https://github.com/bradphelan/jasminerice.git'
+  gem 'guard-jasmine'
 end
 
 # Gems used only for assets and not required
