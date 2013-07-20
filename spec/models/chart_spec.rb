@@ -23,10 +23,15 @@ describe Chart do
 
   describe "acessible attributes" do
     it "should not allow access to user_id" do
-      expect do
-        Chart.new(user_id: user.id)
-      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+      expect{Chart.new(user_id: user.id)}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end
+  end
+
+  it "should cache the data it retrieves" do
+    table = user.tables.create(data: base_data_sample[:data])
+    chart2 = user.charts.create(data_source: "Table(#{table.id})")
+    chart2.refresh
+    expect(chart2.data).to eq(base_data_sample[:data])
   end
 
 end

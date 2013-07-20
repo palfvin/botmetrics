@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130524225433) do
+ActiveRecord::Schema.define(:version => 20130628010805) do
 
   create_table "charts", :force => true do |t|
     t.string   "data_source"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20130524225433) do
     t.text     "javascript"
     t.integer  "user_id"
     t.string   "name"
+    t.text     "data"
   end
 
   create_table "dashboard_elements", :force => true do |t|
@@ -38,6 +39,15 @@ ActiveRecord::Schema.define(:version => 20130524225433) do
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "name"
+  end
+
+  create_table "tables", :force => true do |t|
+    t.string   "data_source"
+    t.text     "data"
+    t.integer  "user_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "name"
   end
 

@@ -1,0 +1,20 @@
+<h2>My Tables</h2>
+<%= link_to('Create Table', new_table_path, class: 'btn') %><br><br>
+<table>
+<tr>
+  <th>Name</th>
+  <th>Last Updated</th>
+</tr>
+<% @tables.each do |table| %>
+<tr>
+  <td>
+  <span class="link"><%= link_to table.name, table_path(table) %></span>
+</td>
+<td>
+  <%= table.updated_at %>
+</td>
+<tr>
+  <% end %>
+
+</table>
+

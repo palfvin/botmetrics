@@ -5,8 +5,12 @@ FactoryGirl.define do
     uid       "palfvin@gmail.com"
   end
 
+  factory :table do
+    name   'foobar'
+    user
+  end
+
   factory :chart do
-    data_source 'foo'
     name 'mychart'
     user
   end

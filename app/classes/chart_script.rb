@@ -11,12 +11,20 @@ class ChartScript
   end
 
   def pivot(aggregator, row, col, val, headers = true)
-    self.rows = PivotTable.new(rows).pivot(rows, row: row, col: col, val: val, headers: headers, aggregator: aggregator)
+    puts aggregator, row, col, val, headers
+    pt = PivotTable.new(rows)
+    puts 'pt created'
+    self.rows = pt.pivot(row: row, col: col, val: val, headers: headers, aggregator: aggregator)
+    puts 'pivoted'
   end
 
   def pivot2(pivot_options = {})
     pivot_options = js_object_to_hash_with_sym_keys(pivot_options) if pivot_options.class == V8::Object
     self.rows = PivotTable.new(rows).pivot(pivot_options)
+  end
+
+  def date(date_string)
+    DateTime.parse(date_string, '%Y/%m/%d')
   end
 
   def pivot_js(options)
@@ -54,6 +62,7 @@ class ChartScript
     @options.update(path, val) ; end
 
   def interpret(string)
+    string = "" if !string
     if string =~ /\A\/\//
       interpret_js(string)
     elsif string =~ /\A#/
@@ -92,11 +101,13 @@ class ChartScript
       end
     end
     context['rows'] = @rows
+    context['console'] = MyConsole.new
     context
   end
 
   JS_INIT = "
-    botmetrics.cs = new botmetrics.ChartScript(rows);
+    botmetrics = {};
+    botmetrics.cs = new ChartScript(rows);
     set = function (path, val) {botmetrics.cs.set(path, val)};
     pivot = function (options) {botmetrics.cs.pivot(options)};
     filter = function (filter_body) {botmetrics.cs.filter(filter_body)};
@@ -108,16 +119,35 @@ class ChartScript
     end
   end
 
-  def interpret_js(script)
-    preface = File.read('/Users/palfvin/tmp/pivot_table.js.js')
-    underscore = File.read('/Users/palfvin/.rvm/gems/ruby-1.9.3-p194@rails3tutorial2ndEd/gems/underscore-rails-1.4.4/vendor/assets/javascripts/underscore.js')
-    context = js_context
-    context['console'] = MyConsole.new
-    context['rows'] = @rows
-    context.eval("botmetrics = {};\n"+underscore+preface+JS_INIT)
-    context.eval(script)
+  def load_coffeescript_libraries(context)
+    ['pivot_table'].each {|name| load_javascript(context, coffeescript_path(name))}
+  end
+
+  def load_javascript(context, path)
+    javascript = /coffee$/ =~ path ? CoffeeScript::compile(File.read(path)) : File.read(path)
+    context.eval(javascript)
+  end
+
+  def coffeescript_path(filename_root)
+    path = Rails.root.join('app', 'assets', 'javascripts', "#{filename_root}.js.coffee").to_s
+  end
+
+  def load_libraries(context)
+    load_coffeescript_libraries(context)
+    load_javascript(context, Gem.loaded_specs['underscore-rails'].full_gem_path+'/vendor/assets/javascripts/underscore.js')
+    context.eval(JS_INIT)
+  end
+
+  def set_variables_from_context(context)
     @rows = JSON[context.eval('JSON.stringify(botmetrics.cs.rows)')]
     @options = HashWithPathUpdate[self.class.convert_string_keys(JSON[context.eval('JSON.stringify(botmetrics.cs.options)')])]
+  end
+
+  def interpret_js(script)
+    context = js_context
+    load_libraries(context)
+    context.eval(script)
+    set_variables_from_context(context)
   end
 
   def rows=(value)

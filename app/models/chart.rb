@@ -7,22 +7,36 @@ require 'ostruct'
 
 class Chart < ActiveRecord::Base
   attr_accessible :options, :data_source, :javascript, :name
+  before_save :update_javascript
   belongs_to :user
 
   validates :user_id, presence: true
 
-  def prepare_to_save
-    gs = self.data_source.blank? ? OpenStruct.new({rows: nil, title: 'Title'}) : GoogleSpreadsheet.new(self.data_source)
-    chart_script = ChartScript.new(gs.rows)
+  def refresh
+    self.data = Table.get_table_info(data_source)[:rows]
+  end
+
+  def update_javascript
+    return if !javascript.blank?
+    table_info = if data_source.blank? then {rows: nil, title: ""}
+      else
+        default_to_google_source
+        Table.get_table_info(data_source)
+      end
+    chart_script = ChartScript.new(table_info[:rows])
     chart_script.interpret(self.options)
     rows = chart_script.rows
     highchart_options = chart_script.options
     if self.name.blank?
       self.name = (highchart_options[:title][:text] if highchart_options.path_exists?('title.text')) ||
-        gs.title
+        table_info[:title]
     end
     options = HighchartOptions.new(self.name, rows, highchart_options)
     self.javascript = options.options.to_json
+  end
+
+  def default_to_google_source
+    self.data_source = "Google(#{data_source})" if /^[A-Za-z0-9]+$/ =~ data_source
   end
 
 end

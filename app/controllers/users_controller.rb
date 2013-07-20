@@ -24,6 +24,12 @@ class UsersController < ApplicationController
     @dashboards = @user.dashboards
   end
 
+  def tables
+    @title = 'Tables'
+    @user = User.find(params[:id])
+    @tables = @user.tables
+  end
+
   private
 
   def require_authorization

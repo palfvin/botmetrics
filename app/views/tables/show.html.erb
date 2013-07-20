@@ -1,0 +1,10 @@
+<% provide(:title, @table.name) %>
+<h2><%= link_to @table.name, edit_table_path(@table) %></h2>
+<table class="table"><% @table.data.each_with_index do |row, index| %>
+  <% next if (7...@table.data.length-3) === index %>
+  <tr><% row.each do |cell| %>
+  	<td><%= index == 6 ? '...' : cell %></td>
+  	<% end %>
+  </tr>
+  <% end %>
+</table>

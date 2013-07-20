@@ -47,7 +47,7 @@ class HighchartOptions
     @rows[0][0] ; end
 
   def check_corner_label
-    if corner && (match = corner.match(/([^(]*)\(([^\\]*)\\([^\\]*)\)/))
+    if corner && corner.is_a?(String) && (match = corner.match(/([^(]*)\(([^\\]*)\\([^\\]*)\)/))
       set('xAxis.title.text', match.captures[2].strip)
       set('yAxis.title.text', match.captures[0].strip)
     end

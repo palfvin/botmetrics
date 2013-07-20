@@ -1,6 +1,6 @@
-window.botmetrics = {}
+root = this
 
-botmetrics.HashWithPathUpdate = class HashWithPathUpdate
+class HashWithPathUpdate
 
   constructor: (obj = {}) ->
     _.extend(this,obj)
@@ -28,7 +28,7 @@ botmetrics.HashWithPathUpdate = class HashWithPathUpdate
       h[last_key] = val
     @
 
-botmetrics.ChartScript = class ChartScript
+root.ChartScript = class ChartScript
 
   constructor: (@rows) ->
     @options = new HashWithPathUpdate
@@ -68,7 +68,7 @@ botmetrics.ChartScript = class ChartScript
     else
       @rows.sort(sort_function)
 
-botmetrics.PivotTable = class PivotTable
+root.PivotTable = class PivotTable
 
   PIVOT_DEFAULTS: {row: 0, col: 1, val: 2, headers: 0, aggregator: "max"}
 
@@ -86,7 +86,6 @@ botmetrics.PivotTable = class PivotTable
 
   pivot: (options = {}) ->
     @options = _.extend({},@PIVOT_DEFAULTS, options)
-    console.log('pivot', options, @options)
     @dataRows = @rows.slice(@firstDataRow())
     @setUpHeaders()
     [@header_row].concat(([rowVal].concat(@dataRow(rowVal)) for rowVal in @rowHeaders))

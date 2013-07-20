@@ -101,7 +101,7 @@ GEM
       lumberjack (>= 1.0.2)
       pry (>= 0.9.10)
       thor (>= 0.14.6)
-    guard-jasmine (1.16.0)
+    guard-jasmine (1.17.0)
       childprocess
       guard (>= 1.1.0)
       multi_json
@@ -131,7 +131,7 @@ GEM
       multi_json (>= 1.5)
     libv8 (3.11.8.17)
     listen (0.7.3)
-    lumberjack (1.0.3)
+    lumberjack (1.0.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -139,9 +139,9 @@ GEM
     method_source (0.8.1)
     mime-types (1.23)
     mini_portile (0.5.0)
-    multi_json (1.7.6)
+    multi_json (1.7.7)
     multipart-post (1.2.0)
-    newrelic_rpm (3.6.3.111)
+    newrelic_rpm (3.6.5.130)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth (0.4.7)
@@ -189,7 +189,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.0.4)
+    rake (10.1.0)
     rb-fsevent (0.9.1)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -274,10 +274,12 @@ DEPENDENCIES
   jquery-rails (= 2.0.2)
   jquery-ui-rails
   newrelic_rpm
+  nokogiri
   omniauth-facebook
   pg (= 0.12.2)
   quiet_assets
   rails (= 3.2.11)
+  rake (= 10.1.0)
   rb-fsevent (= 0.9.1)
   rspec-rails (= 2.11.0)
   sass-rails (= 3.2.5)

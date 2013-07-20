@@ -5,3 +5,21 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+flights = [{
+    depart_time_hour: 600,
+    arrive_time_hour: 700,
+
+    passengers: [
+        {
+            user_id: 1,
+            request: true    
+        }
+    ]
+}]
+
+trip = Trip.create(
+  {
+
+    flights: {flights: 'somestring'}
+  }
+)

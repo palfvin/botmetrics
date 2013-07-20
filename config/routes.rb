@@ -5,6 +5,9 @@ Botmetrics::Application.routes.draw do
 
   resources :users do
     member do
+      get :tables
+    end
+    member do
       get :charts
     end
     member do
@@ -12,6 +15,7 @@ Botmetrics::Application.routes.draw do
     end
   end
 
+  resources :tables
   resources :charts
   resources :dashboards
   resources :dashboard_elements

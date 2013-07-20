@@ -20,7 +20,7 @@ describe "ChartScript", ->
 
   it "should handle the church test case", ->
     conversion = "pivot({row: function(){return 'Rower'}, col: 0, val: 1})"
-    table_dsl = new botmetrics.ChartScript([['Date', 'Attendance'], ['1/1/2013', 210], ['3/1/2013', 305]])
+    table_dsl = new ChartScript([['Date', 'Attendance'], ['1/1/2013', 210], ['3/1/2013', 305]])
     table_dsl.interpret(conversion)
     expect(table_dsl.rows).toEqual([
       ['Attendance(Rower\\Date)', '1/1/2013', '3/1/2013'],
@@ -31,7 +31,7 @@ describe "ChartScript", ->
       set('chart.type', 'column');
       set('title.text', 'Test Title');
       pivot({row: 1, col: 2, val: 0, aggregator: 'max', headers: null});"
-    table_dsl = new botmetrics.ChartScript(stringInputTable)
+    table_dsl = new ChartScript(stringInputTable)
     table_dsl.interpret(conversion)
     expect(table_dsl.rows).toEqual([
       ["", "c1", "c2"],
@@ -42,13 +42,13 @@ describe "ChartScript", ->
       title: {text: 'Test Title'}})).toBeTruthy()
 
   it "should filter out rows", ->
-    chart_script = new botmetrics.ChartScript([[0, "a"], [1, "b"]])
+    chart_script = new ChartScript([[0, "a"], [1, "b"]])
     chart_script.interpret("filter('row[0] > 0')")
     expect(chart_script.rows).toEqual([[1, "b"]])
 
   it "should sort rows with a header", ->
     table_header = ["Value", "Row", "Column"]
-    chart_script = new botmetrics.ChartScript([table_header].concat(stringInputTable))
+    chart_script = new ChartScript([table_header].concat(stringInputTable))
     chart_script.interpret("sort(2, true)")
     expect(chart_script.rows).toEqual([
       table_header,

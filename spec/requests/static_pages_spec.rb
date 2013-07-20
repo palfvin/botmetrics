@@ -7,7 +7,22 @@ describe "Static Pages" do
   describe "Home page" do
     before { visit root_path }
 
-    it { should have_selector('h1', text: 'Track your world!') }
+    it "should have herald" do
+      herald = page.find('h1')
+      herald.should have_content('Track your world!')
+    end
+
+    describe "after login" do
+      before do
+        @user = FactoryGirl.create(:user)
+        sign_in(@user)
+      end
+
+      it { should have_link('Charts')  }
+      it { should have_link('Dashboards') }
+      it { should have_link('Tables') }
+
+    end
 
   end
 

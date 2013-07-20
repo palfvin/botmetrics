@@ -39,12 +39,12 @@ describe "PivotTable", ->
     headerlessOptions = merge(headerOptions, { headers: null} )
 
   it "should pivot a basic 2x3 table without headers", ->
-    pt = new botmetrics.PivotTable(stringInputTable)
+    pt = new PivotTable(stringInputTable)
     expect(pt.pivot(headerlessOptions)).toEqual(defaultPivotedTable())
 
   it "should pivot a basic 2x3 table with a header", ->
     headerInputRow = ['Value', 'Row', 'Column']
-    pt = new botmetrics.PivotTable([headerInputRow].concat(stringInputTable))
+    pt = new PivotTable([headerInputRow].concat(stringInputTable))
     expect(pt.pivot(headerOptions)).toEqual(defaultPivotedTable(expectedCorner))
 
   it "should pivot a basic 2x3 table with functions for row/col/val and an object for headers", ->
@@ -54,13 +54,13 @@ describe "PivotTable", ->
       val: (r) -> r[headerOptions.val]
       headers: {row: 'Row', col: 'Column', val: 'Value'}
       }
-    pt = new botmetrics.PivotTable(stringInputTable)
+    pt = new PivotTable(stringInputTable)
     expect(pt.pivot(complexOptions)).toEqual(defaultPivotedTable(expectedCorner))
 
   it "should sort the column headers in reverse alphabetical order if I specify that", ->
     columnSort = (array) ->
       array.sort().reverse()
-    pt = new botmetrics.PivotTable(stringInputTable)
+    pt = new PivotTable(stringInputTable)
     reverseSortedPivotedTable = [
       ["", "c2", "c1"],
       ["r1", "b", "a"],
@@ -80,7 +80,7 @@ describe "PivotTable", ->
     pt = null
 
     beforeEach ->
-      pt = new botmetrics.PivotTable(duplicate(numericInputTable))
+      pt = new PivotTable(duplicate(numericInputTable))
 
     it "should pivot a table with count", ->
       expect(pt.pivot(headerlessOptionsWith("count"))).toEqual(pivotedTable([[2, 2],[2, undefined]]))

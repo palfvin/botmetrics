@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email
   has_many :charts, dependent: :destroy
   has_many :dashboards, dependent: :destroy
+  has_many :tables, dependent: :destroy
 
   def self.from_omniauth(auth)
     if user = where(auth.slice(:provider, :uid)).first

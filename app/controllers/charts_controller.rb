@@ -1,14 +1,14 @@
 class ChartsController < ApplicationController
   before_filter :require_authentication
-  before_filter :set_chart_and_require_authorization, only: [:edit, :update, :show]
+  before_filter :set_chart_and_require_authorization, only: [:edit, :update, :show, :destroy]
 
   def create
     @chart = current_user.charts.build(params[:chart])
-    @chart.prepare_to_save
     if @chart.save
       flash[:success] = "Chart created"
       redirect_to @chart
     else
+      raise "Creation failure"
       render 'new'
     end
   end
@@ -23,13 +23,23 @@ class ChartsController < ApplicationController
   def edit
   end
 
+  def destroy
+    if @chart.destroy
+      flash[:success] = "Chart deleted"
+      redirect_to charts_user_path(current_user)
+    else
+      raise "Delete failure"
+      render 'show'
+    end
+  end
+
   def update
     @chart.update_attributes(params[:chart])
-    @chart.prepare_to_save
     if @chart.save
       flash[:success] = "Chart updated"
       redirect_to @chart
     else
+      raise "Update failure"
       render 'edit'
     end
   end
