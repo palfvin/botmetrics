@@ -30,6 +30,7 @@ describe "dashboards/show.html.erb" do
   it "displays the dashboard name" do
     visit dashboard_path(@dashboard)
     page.should have_content(@dashboard.name)
+    page.should have_content(@dashboard.description)
   end
 
   it "lets you create a new dashboard" do

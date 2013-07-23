@@ -13,6 +13,7 @@ describe Dashboard do
   it { should respond_to(:user) }
   it { should respond_to(:charts) }
   it { should respond_to(:chart_ids) }
+  it { should respond_to(:description) }
 
   it { should be_valid }
 

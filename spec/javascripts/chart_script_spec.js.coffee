@@ -30,7 +30,7 @@ describe "ChartScript", ->
     conversion = "
       set('chart.type', 'column');
       set('title.text', 'Test Title');
-      pivot({row: 1, col: 2, val: 0, aggregator: 'max', headers: null});"
+      pivot({row: 1, col: 2, val: 0, aggregator: 'max', header: null});"
     table_dsl = new ChartScript(stringInputTable)
     table_dsl.interpret(conversion)
     expect(table_dsl.rows).toEqual([

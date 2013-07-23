@@ -2,12 +2,6 @@ require 'spec_helper'
 
 describe ChartScript do
 
-  SYMBOL_INPUT = [
-      [:a, :r1, :c1],
-      [:b, :r1, :c2],
-      [:c, :r2, :c1],
-      [:d, :r2, :c2]];
-
   let(:symbol_input_table) {[
       [:a, :r1, :c1],
       [:b, :r1, :c2],
@@ -40,6 +34,23 @@ describe ChartScript do
       ['Rower', 210, 305]]
   end
 
+  describe "reverse capability" do
+    let(:table_dsl) {ChartScript.new(numeric_input_table)}
+    let(:r) {numeric_input_table}
+    it "should reverse without header if specified" do
+      expect(table_dsl.interpret('reverse(false)').rows).to eql([r[2],r[1],r[0]])
+    end
+
+    it "should reverse with header when specified" do
+      expect(table_dsl.interpret("reverse(true)").rows).to eql([r[0],r[2],r[1]])
+    end
+
+    it "should reverse with header by default" do
+      expect(table_dsl.interpret("reverse()").rows).to eql([r[0],r[2],r[1]])
+    end
+
+  end
+
  it "should be able to process basic javascript arrays" do
     conversion = "// Header for javascript
       "
@@ -53,7 +64,7 @@ describe ChartScript do
     conversion = "// Header for javascript
       set('chart.type', 'column');
       set('title.text', 'Test Title');
-      pivot({row: 1, col: 2, val: 0, aggregator: 'max', headers: null});
+      pivot({row: 1, col: 2, val: 0, aggregator: 'max', header: null});
       "
     table_dsl = ChartScript.new(symbol_input_table)
     table_dsl.interpret(conversion)
@@ -80,7 +91,7 @@ describe ChartScript do
     conversion = "# Header for coffeescript
       set('chart.type', 'column')
       set('title.text', 'Test Title')
-      pivot({row: 1, col: 2, val: 0, aggregator: 'max', headers: null})
+      pivot({row: 1, col: 2, val: 0, aggregator: 'max', header: null})
       "
       table_dsl = ChartScript.new(symbol_input_table)
       table_dsl.interpret(conversion)
@@ -98,7 +109,7 @@ describe ChartScript do
     conversion = "// Header for javascript
       set('chart.type', 'column');
       set('title.text', 'Test Title');
-      pivot({row: 1, col: 2, val: 0, aggregator: 'max', headers: null});
+      pivot({row: 1, col: 2, val: 0, aggregator: 'max', header: null});
       "
       table_dsl = ChartScript.new(symbol_input_table)
       table_dsl.interpret(conversion)
@@ -114,7 +125,7 @@ describe ChartScript do
 
   it "should handle a basic pivot DSL with :max" do
     conversion = "
-      pivot2(row: 1, col: 2, val: 0, headers: false)
+      pivot2(row: 1, col: 2, val: 0, header: false)
       set('chart.type', 'column')
       set('title.text', 'Test Title')"
     table_dsl = ChartScript.new(symbol_input_table)
@@ -131,7 +142,7 @@ describe ChartScript do
 
   it "should handle a basic pivot DSL with :average" do
     conversion = "
-      pivot2(aggregator: :average, row: 1, col: 2, val: 0, headers: false)
+      pivot2(aggregator: :average, row: 1, col: 2, val: 0, header: false)
       set('chart.type', 'column')
       set('title.text', 'Test Title')"
     table_dsl = ChartScript.new(numeric_input_table*2)

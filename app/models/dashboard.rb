@@ -1,5 +1,5 @@
 class Dashboard < ActiveRecord::Base
-  attr_accessible :chart_ids, :name
+  attr_accessible :chart_ids, :name, :description
   has_many :dashboard_elements
   has_many :charts, through: :dashboard_elements
   belongs_to :user

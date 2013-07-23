@@ -17,6 +17,7 @@ FactoryGirl.define do
 
   factory :dashboard do
     name "New Dashboard"
+    description "Test Description"
     user
   end
 

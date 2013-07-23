@@ -10,12 +10,9 @@ class ChartScript
     @options = HashWithPathUpdate.new()
   end
 
-  def pivot(aggregator, row, col, val, headers = true)
-    puts aggregator, row, col, val, headers
+  def pivot(aggregator, row, col, val, header = true)
     pt = PivotTable.new(rows)
-    puts 'pt created'
-    self.rows = pt.pivot(row: row, col: col, val: val, headers: headers, aggregator: aggregator)
-    puts 'pivoted'
+    self.rows = pt.pivot(row: row, col: col, val: val, header: header, aggregator: aggregator)
   end
 
   def pivot2(pivot_options = {})
@@ -43,10 +40,14 @@ class ChartScript
     end
   end
 
-  def sort(sort_index, headers = true)
+  def reverse(header = true)
+    self.rows = header ? [rows[0]]+rows[1..-1].reverse : rows.reverse
+  end
+
+  def sort(sort_index, header = true)
     sort = lambda {|row| row[sort_index]}
-    if headers
-      self.rows = [rows[0]]+rows.slice(1..-1).sort_by(&sort)
+    if header
+      self.rows = [rows[0]]+rows[1..-1].sort_by(&sort)
     else
       self.rows = rows.sort_by(&sort)
     end
@@ -69,7 +70,8 @@ class ChartScript
       interpret_js(CoffeeScript::compile(string))
     else
       eval(string)
-    end; end
+    end
+    self; end
 
   private
 
@@ -111,7 +113,7 @@ class ChartScript
     set = function (path, val) {botmetrics.cs.set(path, val)};
     pivot = function (options) {botmetrics.cs.pivot(options)};
     filter = function (filter_body) {botmetrics.cs.filter(filter_body)};
-    sort = function (sort_index, headers) {botmetrics.cs.sort(sort_index, headers)};"
+    sort = function (sort_index, header) {botmetrics.cs.sort(sort_index, header)};"
 
   class MyConsole
     def log(obj)

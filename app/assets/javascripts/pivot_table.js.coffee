@@ -56,21 +56,21 @@ root.ChartScript = class ChartScript
 
     @rows = (@rows[i] for i in [0...@rows.length] when predicate.call(null, @rows[i], i))
 
-  sort: (sort_index, headers = true) ->
+  sort: (sort_index, header = true) ->
     sort_function = (a, b) ->
       v1 = a[sort_index]
       v2 = b[sort_index]
       return -1 if v1<v2
       return 1 if v1>v2
       return 0
-    if headers
+    if header
       @rows = [@rows[0]].concat(@rows.slice(1).sort(sort_function))
     else
       @rows.sort(sort_function)
 
 root.PivotTable = class PivotTable
 
-  PIVOT_DEFAULTS: {row: 0, col: 1, val: 2, headers: 0, aggregator: "max"}
+  PIVOT_DEFAULTS: {row: 0, col: 1, val: 2, header: 0, aggregator: "max"}
 
   constructor: (@rows) ->
     @checkInputValidity()
@@ -91,11 +91,11 @@ root.PivotTable = class PivotTable
     [@header_row].concat(([rowVal].concat(@dataRow(rowVal)) for rowVal in @rowHeaders))
 
   firstDataRow: ->
-    headers = @options.headers
-    switch (typeof headers)
-      when 'object' then return 0   # includes case of headers = null
-      when 'number' then return headers+1
-      else raise 'Invalid headers option'
+    header = @options.header
+    switch (typeof header)
+      when 'object' then return 0   # includes case of header = null
+      when 'number' then return header+1
+      else raise 'Invalid header option'
 
   dataRow: (rowVal) ->
     (@aggregate(rowVal, colVal) for colVal in @colHeaders)
@@ -107,11 +107,11 @@ root.PivotTable = class PivotTable
     this[@options.aggregator](vals) unless vals.length == 0
 
   cornerLabel: ->
-    headers = @options.headers
-    if headers == null then return ""
-    [row_name, col_name, val_name] = switch (typeof headers)
-      when "object" then [headers.row, headers.col, headers.val]
-      when "number" then [@get(@rows[headers], @options.row), @get(@rows[headers], @options.col), @get(@rows[headers], @options.val)]
+    header = @options.header
+    if header == null then return ""
+    [row_name, col_name, val_name] = switch (typeof header)
+      when "object" then [header.row, header.col, header.val]
+      when "number" then [@get(@rows[header], @options.row), @get(@rows[header], @options.col), @get(@rows[header], @options.val)]
       else raise "Invalid header parameter"
     "#{val_name}(#{row_name}\\#{col_name})"
 

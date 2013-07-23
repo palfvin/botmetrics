@@ -36,9 +36,9 @@ describe "PivotTable", ->
       ["d", "r2", "c2"]]
 
     headerOptions = {row: 1, col: 2, val: 0}
-    headerlessOptions = merge(headerOptions, { headers: null} )
+    headerlessOptions = merge(headerOptions, { header: null} )
 
-  it "should pivot a basic 2x3 table without headers", ->
+  it "should pivot a basic 2x3 table without header", ->
     pt = new PivotTable(stringInputTable)
     expect(pt.pivot(headerlessOptions)).toEqual(defaultPivotedTable())
 
@@ -47,17 +47,17 @@ describe "PivotTable", ->
     pt = new PivotTable([headerInputRow].concat(stringInputTable))
     expect(pt.pivot(headerOptions)).toEqual(defaultPivotedTable(expectedCorner))
 
-  it "should pivot a basic 2x3 table with functions for row/col/val and an object for headers", ->
+  it "should pivot a basic 2x3 table with functions for row/col/val and an object for header", ->
     complexOptions = {
       row: (r) -> r[headerOptions.row]
       col: (r) -> r[headerOptions.col]
       val: (r) -> r[headerOptions.val]
-      headers: {row: 'Row', col: 'Column', val: 'Value'}
+      header: {row: 'Row', col: 'Column', val: 'Value'}
       }
     pt = new PivotTable(stringInputTable)
     expect(pt.pivot(complexOptions)).toEqual(defaultPivotedTable(expectedCorner))
 
-  it "should sort the column headers in reverse alphabetical order if I specify that", ->
+  it "should sort the column header in reverse alphabetical order if I specify that", ->
     columnSort = (array) ->
       array.sort().reverse()
     pt = new PivotTable(stringInputTable)

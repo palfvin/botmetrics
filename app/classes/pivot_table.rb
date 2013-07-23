@@ -1,6 +1,6 @@
 class PivotTable
 
-  PIVOT_DEFAULTS = {row: 0, col: 1, val: 2, headers: true, aggregator: :max}
+  PIVOT_DEFAULTS = {row: 0, col: 1, val: 2, header: true, aggregator: :max}
 
   def initialize(rows)
     @table = rows
@@ -8,9 +8,10 @@ class PivotTable
   end
 
   def set_up_headers
-    @headers = @options[:headers]
-    @row_headers = headers(row_accessor)
-    @col_headers = headers(col_accessor)
+    @header = @options[:header]
+    @row_headers = header(row_accessor)
+    @row_headers.sort_by! &@options[:row_sort_by] if @options[:row_sort_by]
+    @col_headers = header(col_accessor)
     @col_headers.sort_by! &@options[:col_sort_by] if @options[:col_sort_by]
   end
 
@@ -27,7 +28,7 @@ class PivotTable
   end
 
   def check_input_validity
-    raise unless @table
+    raise unless @table.class==Array
   end
 
   def pivot(options)
@@ -54,11 +55,11 @@ class PivotTable
   end
 
   def corner_label
-    return nil if !@headers
-    if @headers.is_a?(Proc)
-      row_header, col_header, val_header = @headers.call[:row], @headers.call[:col], @headers.call[:val]
-    elsif @headers.is_a?(Hash)
-      row_header, col_header, val_header = @headers[:row], @headers[:col], @headers[:val]
+    return nil if !@header
+    if @header.is_a?(Proc)
+      row_header, col_header, val_header = @header.call[:row], @header.call[:col], @header.call[:val]
+    elsif @header.is_a?(Hash)
+      row_header, col_header, val_header = @header[:row], @header[:col], @header[:val]
     else
       row_header, col_header, val_header = get(top_row, row_accessor), get(top_row, col_accessor), get(top_row, val_accessor)
     end
@@ -67,12 +68,12 @@ class PivotTable
 
   def top_row ; @table[0] ; end
 
-  def headers(index)
+  def header(index)
     cols(index).uniq.sort
   end
 
   def data_rows
-    @headers ? @table[1..-1] : @table
+    @header ? @table[1..-1] : @table
   end
 
   def cols(index)

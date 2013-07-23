@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130628010805) do
+ActiveRecord::Schema.define(:version => 20130723030013) do
 
   create_table "charts", :force => true do |t|
     t.string   "data_source"
@@ -37,9 +37,10 @@ ActiveRecord::Schema.define(:version => 20130628010805) do
 
   create_table "dashboards", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "name"
+    t.string   "description"
   end
 
   create_table "tables", :force => true do |t|

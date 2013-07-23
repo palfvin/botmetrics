@@ -18,7 +18,6 @@ describe "tables page" do
   it "for show displays the table name and HTML table contents" do
     visit table_path(@table)
     page.should have_content('Table 1')
-    puts "table.tr is #{page.find('table tr')}"
   end
 
   it "for edit displays the name field" do
@@ -40,26 +39,23 @@ describe "tables page" do
 
       let (:click) {click_button 'Create my table'}
 
+      subject { page }
+
       before do
         fill_in "Name", with: base_data_sample[:title]
       end
 
-      it "should create tables with name and data" do
+      it "should create table" do
         fill_in 'table_data', with: base_data_sample[:data]
         click
-        page.should have_content('Table created')
-        click_link 'Edit'
-        page.should have_field('table_name', with: base_data_sample[:title])
-        page.should have_field('table_data', with: text_area_adjustment(base_data_sample[:data]))
+        should have_link(base_data_sample[:title])
       end
 
       it "should pull data from Google when data is empty" do
         mock_google_spreadsheet(google_data_source)
         fill_in 'table_data_source', with: google_data_source[:data_source]
         click
-        page.should have_content('Table created')
-        click_link 'Edit'
-        page.should have_field('table_data', with: text_area_adjustment(google_data_source[:data]))
+        should have_content('Table created')
       end
 
       it "should not pull data from Google when data_source and data are both present" do
@@ -68,9 +64,7 @@ describe "tables page" do
         fill_in 'table_data_source', with: google_data_source[:data_source]
         fill_in 'table_data', with: other_sample_table_data
         click
-        page.should have_content('Table created')
-        click_link 'Edit'
-        page.should have_field('table_data', with: text_area_adjustment(other_sample_table_data))
+        should have_content('Table created')
       end
 
     end

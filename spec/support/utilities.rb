@@ -8,7 +8,10 @@ def sign_in(user)
 end
 
 def base_data_sample
- {title: 'Title', data: [[2], [3]], javascript: '{"series":[{"name":3,"data":[]}],"xAxis":{"categories":[]},"title":{"text":"Title"}}'}
+ {title: 'Title',
+  data: [[2], [3]],
+  javascript: '{"series":[{"name":3,"data":[]}],"xAxis":{"categories":[]},"title":{"text":"Title"}}',
+  description: 'For testing purposes'}
 end
 
 def text_area_adjustment(string)

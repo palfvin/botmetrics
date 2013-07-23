@@ -25,10 +25,10 @@ describe PivotTable do
     row: lambda {|r| r[1]},
     col: lambda {|r| r[2]},
     val: lambda {|r| r[0]},
-    headers: lambda { {row: 'RowL', col: 'ColumnL', val: 'ValueL'} }
+    header: lambda { {row: 'RowL', col: 'ColumnL', val: 'ValueL'} }
     }}
 
-  let(:headerless_options) { header_options.merge( { headers: false} ) }
+  let(:headerless_options) { header_options.merge( { header: false} ) }
 
   def headerless_options_with(aggregator)
     headerless_options.merge({aggregator: aggregator})
