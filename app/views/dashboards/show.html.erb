@@ -1,4 +1,4 @@
-<h1 id="foo" name="foo" data-content="<%= @dashboard.description %>"><%= @dashboard_owner ? link_to(@dashboard.name, edit_dashboard_path(@dashboard)) : @dashboard.name %></h1>
-<script>$('#foo').popover(trigger: 'hover')</script>
+<h1><%= @dashboard_owner ? link_to(@dashboard.name, edit_dashboard_path(@dashboard)) : @dashboard.name %></h1>
+<div class="text-centered"><%= @dashboard.description %></div>
 
 <div><%= render @dashboard.dashboard_elements %></div>

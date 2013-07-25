@@ -9,6 +9,7 @@ class Chart < ActiveRecord::Base
   attr_accessible :options, :data_source, :javascript, :name
   before_save :update_javascript
   belongs_to :user
+  has_many :dashboard_element, dependent: :destroy
 
   validates :user_id, presence: true
 

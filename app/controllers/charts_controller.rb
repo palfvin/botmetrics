@@ -14,6 +14,7 @@ class ChartsController < ApplicationController
   end
 
   def show
+    puts "Inside of show chart!!!!"
   end
 
   def new
@@ -47,7 +48,9 @@ class ChartsController < ApplicationController
   private
 
   def set_chart_and_require_authorization
+    puts "Inside of require authorization!"
     @chart = Chart.find(params[:id])
+    puts "Chart id is #{@chart.id}", current_user.id, @chart.user_id
     flash[:error] = 'Not authorized for that operation' and redirect_to(root_path) unless current_user.id==@chart.user_id
   end
 
