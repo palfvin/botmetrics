@@ -58,15 +58,6 @@ describe "tables page" do
         should have_content('Table created')
       end
 
-      it "should not pull data from Google when data_source and data are both present" do
-        other_sample_table_data = '[[1,2]]'
-        GoogleSpreadsheet.should_receive(:new).exactly(0).times
-        fill_in 'table_data_source', with: google_data_source[:data_source]
-        fill_in 'table_data', with: other_sample_table_data
-        click
-        should have_content('Table created')
-      end
-
     end
 
   end

@@ -5,25 +5,17 @@ describe "chart pages" do
   let(:user) {FactoryGirl.create(:user)}
   let(:chart) {FactoryGirl.create(:chart, user: user, name: 'Chart 1')}
 
-  before {
-    puts "in before"
-    sign_in user
-    puts chart.inspect
-    puts Rails::VERSION::STRING
-    puts chart_path(chart)}
+  before {sign_in user}
 
   subject { page }
 
   it "for show displays the chart name" do
-    puts "here at start of chart page"
     visit chart_path(chart)
-    puts "here after visit"
     page.should have_content('Chart 1')
   end
 
   it "for show displays the edit link" do
     visit chart_path(chart)
-    puts "Edit: #{page.html}"
     page.should have_link('Edit')
   end
 

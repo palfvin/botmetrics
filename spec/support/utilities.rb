@@ -1,5 +1,6 @@
 include ApplicationHelper
 
+# change line number temporarily
 def sign_in(user)
   visit signin_path
   fill_in "Name", with: user.name

@@ -23,9 +23,10 @@ gem 'underscore-rails'
 gem 'date_easter'
 
 group :development, :test do
-  gem 'rspec-rails', '2.11.0'
+  gem 'rspec-rails'
   gem 'guard-rspec', '1.2.1'
   gem 'guard-spork', '1.5.0'
+  gem 'shoulda-matchers'
   gem 'spork', '0.9.2'
   gem 'annotate', '2.5.0'
   gem 'quiet_assets'

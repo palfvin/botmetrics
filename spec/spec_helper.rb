@@ -15,6 +15,11 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
   RSpec.configure do |config|
     # == Mock Framework
     #
@@ -42,5 +47,10 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
+
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
 
 end

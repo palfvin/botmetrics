@@ -1,6 +1,9 @@
 require 'coffee-script'
 require 'date_easter'
 
+include ::NewRelic::Agent::MethodTracer
+
+
 class ChartScript
 
   attr_reader :options, :data_sources
@@ -34,7 +37,10 @@ class ChartScript
   end
 
   def filter(filter_body)
-    predicate = eval("lambda {|row, index| #{filter_body} }")
+    filter2(eval("lambda {|row, index| #{filter_body} }"))
+  end
+
+  def filter2(predicate)
     (rows.length-1).downto(0) do |index|
       rows.delete_at(index) if !predicate.call(rows[index], index) rescue false
     end
@@ -155,6 +161,8 @@ class ChartScript
   def rows=(value)
     @rows = value
   end
+
+  [:pivot, :pivot2, :filter, :sort].each {|method| add_method_tracer(method)}
 
 end
 

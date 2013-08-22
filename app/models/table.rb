@@ -13,7 +13,7 @@ class Table < ActiveRecord::Base
   end
 
   def get_and_save_data
-    if !data_source.blank? and data.blank?
+    if !data_source.blank?
       table_info = Table.get_table_info(data_source)
       self.data = table_info[:rows]
     end

@@ -17,6 +17,10 @@ class Chart < ActiveRecord::Base
     self.data = Table.get_table_info(data_source)[:rows]
   end
 
+  def javascript_plus
+    javascript.gsub(/"([^(")]+)":/, '\1:').gsub(/"\?function/, 'function').gsub(/\?function"/, '').gsub(/\\"/,'"').html_safe
+  end
+
   def update_javascript
     return if !javascript.blank?
     table_info = if data_source.blank? then {rows: nil, title: ""}
