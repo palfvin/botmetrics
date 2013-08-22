@@ -3,7 +3,7 @@
 </div>
 <script>
 $(document).ready(function () {
-  $('<%= "#chart_#{chart.id}"-%>').highcharts( <%= chart.javascript.gsub(/"([^(")]+)":/, '\1:').html_safe if chart.javascript %> );
+  $('<%= "#chart_#{chart.id}"-%>').highcharts( <%= chart.javascript_plus if chart.javascript %> );
 });
 </script>
 
