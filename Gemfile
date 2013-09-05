@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 gem 'rails'
 gem 'protected_attributes'
-gem 'launchy'
 gem 'rake'
 gem 'nokogiri'
 gem 'sass-rails'
@@ -32,6 +32,7 @@ group :development, :test do
   gem 'spork-rails', :git => 'https://github.com/sporkrb/spork-rails'
   gem 'shoulda-matchers'
   gem 'spork'
+  gem 'launchy'
   gem 'annotate'
   gem 'quiet_assets'
   gem 'jasminerice', :git => 'https://github.com/bradphelan/jasminerice.git'
@@ -50,4 +51,5 @@ group :test do
   # gem 'launchy', '2.1.0'
   gem 'rb-fsevent', :require => false
   gem 'growl'
+  gem 'growl_notify'
 end
