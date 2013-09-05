@@ -46,7 +46,7 @@ describe "tables page" do
       end
 
       it "should create table" do
-        fill_in 'table_data', with: base_data_sample[:data]
+        fill_in 'table_data', with: base_data_sample[:data].to_s
         click
         should have_link(base_data_sample[:title])
       end

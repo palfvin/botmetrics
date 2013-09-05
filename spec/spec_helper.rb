@@ -42,6 +42,9 @@ Spork.prefork do
     # automatically. This will be the default behavior in future versions of
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
+
+    # Include Capybara as of Rails 4
+    config.include Capybara::DSL
   end
 end
 

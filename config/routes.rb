@@ -20,16 +20,16 @@ Botmetrics::Application.routes.draw do
   resources :dashboards
   resources :dashboard_elements
 
-  match 'auth/developer/callback', to: 'sessions#create'
+  match '/auth/developer/callback', to: 'sessions#create', via: :post
 
-  match '/signup', to: 'users#new'
-  match '/signin', to: 'sessions#new'
+  match '/signup', to: 'users#new', via: :get
+  match '/signin', to: 'sessions#new', via: :get
   match '/signout', to: 'sessions#destroy', via: :delete
-  match 'auth/facebook/callback', to: 'sessions#create'
+  match 'auth/facebook/callback', to: 'sessions#create', via: :get
 
-  match '/help', to: 'static_pages#help'
-  match '/about', to: 'static_pages#about'
-  match '/contact', to: 'static_pages#contact'
+  match '/help', to: 'static_pages#help', via: :get
+  match '/about', to: 'static_pages#about', via: :get
+  match '/contact', to: 'static_pages#contact', via: :get
 
 
   # The priority is based upon order of creation:

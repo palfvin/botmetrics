@@ -14,7 +14,6 @@ class ChartsController < ApplicationController
   end
 
   def new
-    puts "Inside controller id is #{self.object_id}, for #{self}"
     @chart = Chart.new
   end
 

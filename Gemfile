@@ -1,17 +1,20 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
-gem 'rake', '10.1.0'
+gem 'rails'
+gem 'protected_attributes'
+gem 'launchy'
+gem 'rake'
 gem 'nokogiri'
+gem 'sass-rails'
 gem 'bootstrap-sass'
-gem 'bcrypt-ruby', '3.0.1'
-gem 'faker', '1.0.1'
-gem 'will_paginate', '3.0.3'
+gem 'bcrypt-ruby'
+gem 'faker'
+gem 'will_paginate'
 gem 'bootstrap-will_paginate'
-gem 'jquery-rails', '2.0.2'
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'pg', '0.12.2'
-gem 'childprocess', '0.3.9'
+gem 'pg'
+gem 'childprocess'
 gem 'highcharts-rails'
 gem 'omniauth-facebook'
 gem 'google_drive'
@@ -24,31 +27,27 @@ gem 'date_easter'
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'guard-rspec', '1.2.1'
-  gem 'guard-spork', '1.5.0'
+  gem 'guard-rspec'
+  gem 'guard-spork'
+  gem 'spork-rails', :git => 'https://github.com/sporkrb/spork-rails'
   gem 'shoulda-matchers'
-  gem 'spork', '0.9.2'
-  gem 'annotate', '2.5.0'
+  gem 'spork'
+  gem 'annotate'
   gem 'quiet_assets'
-  gem "jasminerice", :git => 'https://github.com/bradphelan/jasminerice.git'
+  gem 'jasminerice', :git => 'https://github.com/bradphelan/jasminerice.git'
   gem 'guard-jasmine'
 end
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails',   '3.2.5'
-  gem 'coffee-rails', '3.2.2'
-  gem 'uglifier', '1.2.3'
-end
 
 group :test do
   gem 'simplecov', require: false
-  gem 'capybara', '1.1.2'
-  gem 'factory_girl_rails', '4.1.0'
-  gem 'cucumber-rails', '1.2.1', :require => false
-  gem 'database_cleaner', '0.7.0'
+  gem 'capybara'
+  gem 'factory_girl_rails'
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
   # gem 'launchy', '2.1.0'
-  gem 'rb-fsevent', '0.9.1', :require => false
-  gem 'growl', '1.0.3'
+  gem 'rb-fsevent', :require => false
+  gem 'growl'
 end

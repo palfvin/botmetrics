@@ -16,7 +16,7 @@ def base_data_sample
 end
 
 def text_area_adjustment(string)
-  "\n#{string}"
+  "#{string}"
 end
 
 # def json_cleansed(object)

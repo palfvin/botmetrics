@@ -11,7 +11,7 @@ describe "chart pages" do
 
   it "for show displays the chart name" do
     visit chart_path(chart)
-    page.should have_content('Chart 1')
+    page.should have_title('Chart 1')
   end
 
   it "for show displays the edit link" do

@@ -8,7 +8,7 @@ describe HighchartOptions do
     @highchart_options = HighchartOptions.new('Fruit Consumption', sample_array, HashWithPathUpdate.new())
   end
 
-  subject @highchart_options
+  subject {@highchart_options}
 
   it 'should create the expected options' do
     @highchart_options.options.should == {

@@ -22,6 +22,10 @@ describe "Static Pages" do
       it { should have_link('Dashboards') }
       it { should have_link('Tables') }
 
+      it "should go to About page" do
+        click_link 'About'
+      end
+
     end
 
   end
