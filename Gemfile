@@ -48,8 +48,11 @@ group :test do
   gem 'factory_girl_rails'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
-  # gem 'launchy', '2.1.0'
   gem 'rb-fsevent', :require => false
   gem 'growl'
   gem 'growl_notify'
+end
+
+group :production do
+  gem  'rails_12factor'
 end
