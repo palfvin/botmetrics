@@ -48,7 +48,6 @@ describe "tables page" do
       it "should create table" do
         fill_in 'table_data', with: base_data_sample[:data].to_s
         click
-        save_and_open_page
         should have_link(base_data_sample[:title])
       end
 
