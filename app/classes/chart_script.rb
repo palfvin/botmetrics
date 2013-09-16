@@ -36,13 +36,13 @@ class ChartScript
     obj.each_with_object({}) {|v, h| h[v[0].to_sym] = v[1]}
   end
 
-  def filter(filter_body)
-    filter2(eval("lambda {|row, index| #{filter_body} }"))
+  def filter2(filter_body)
+    filter(filter_body)
   end
 
-  def filter2(predicate)
+  def filter(predicate)
     (rows.length-1).downto(0) do |index|
-      rows.delete_at(index) if !predicate.call(rows[index], index) rescue false
+      rows.delete_at(index) if !predicate.call(rows[index], index) # rescue false
     end
   end
 

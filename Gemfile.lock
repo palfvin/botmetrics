@@ -297,6 +297,7 @@ DEPENDENCIES
   omniauth-facebook
   pg
   protected_attributes
+  pry
   quiet_assets
   rails
   rake
