@@ -26,6 +26,7 @@ gem 'underscore-rails'
 gem 'date_easter'
 
 group :development, :test do
+  gem 'pry'
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'guard-spork'

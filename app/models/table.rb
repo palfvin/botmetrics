@@ -2,7 +2,7 @@ class Table < ActiveRecord::Base
   attr_accessible :data_source, :data, :name
   belongs_to :user
   before_save :get_and_save_data
-  serialize :data
+  serialize :data, Array
   validates_uniqueness_of :name
 
   validates :user_id, presence: true
