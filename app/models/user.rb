@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :name, :email
+  attr_accessible :name, :email, :remember_token
   has_many :charts, dependent: :destroy
   has_many :dashboards, dependent: :destroy
   has_many :tables, dependent: :destroy
@@ -21,5 +21,19 @@ class User < ActiveRecord::Base
       user.email = auth[:info][:email]
     end
   end
+
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.encrypt(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  private
+
+    def create_remember_token
+      self.remember_token = User.encrypt(User.new_remember_token)
+    end
 
 end

@@ -31,6 +31,18 @@ class PivotTable
     raise unless @table.class==Array
   end
 
+  def unpivot
+    vals = []
+    cols = @table[0][1..-1]
+    @table[1..-1].each do |row|
+      row_val = row[0]
+      row[1..-1].each_with_index do |val, i|
+        vals << [row_val, cols[i], val]
+      end
+    end
+    vals
+  end
+
   def pivot(options)
     @options = PIVOT_DEFAULTS.merge(options)
     set_up_headers
