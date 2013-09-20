@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe PivotTable do
 
+  let(:pivoted_table) {[
+      [nil, :c1, :c2],
+      [:r1, :a, :b],
+      [:r2, :c, :d]]}
+
+  let(:unpivoted_table) {[
+      [:r1, :c1, :a],
+      [:r1, :c2, :b],
+      [:r2, :c1, :c],
+      [:r2, :c2, :d]]}
+
   let(:symbol_input_table) {[
       [:a, :r1, :c1],
       [:b, :r1, :c2],
@@ -106,6 +117,11 @@ describe PivotTable do
       [:r1, :b, :a],
       [:r2, :d, :c]]
     pt.pivot(headerless_options.merge({col_sort_by: column_sort})).should == pivoted_table
+  end
+
+  it "should unpivot a table" do
+    pt = PivotTable.new(pivoted_table)
+    pt.unpivot.should == unpivoted_table
   end
 
 end

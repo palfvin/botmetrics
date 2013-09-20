@@ -13,6 +13,11 @@ class ChartScript
     @options = HashWithPathUpdate.new()
   end
 
+  def unpivot
+    pt = PivotTable.new(rows)
+    self.rows = pt.unpivot
+  end
+
   def pivot(aggregator, row, col, val, header = true)
     pt = PivotTable.new(rows)
     self.rows = pt.pivot(row: row, col: col, val: val, header: header, aggregator: aggregator)
