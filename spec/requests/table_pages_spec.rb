@@ -20,9 +20,21 @@ describe "tables page" do
     page.should have_content('Table 1')
   end
 
-  it "for edit displays the name field" do
-    visit edit_table_path(@table)
-    page.should have_field('Name')
+  context "edit" do
+
+    before {visit edit_table_path(@table)}
+
+    it "displays the name field" do
+      page.should have_field('Name')
+    end
+
+    it "lets you change the data value" do
+      fill_in "Data", with: "[[4, 5]]"
+      click_on 'Save changes'
+      @table.reload
+      @table.data.should eql([[4,5]])
+    end
+
   end
 
   describe "for create" do

@@ -1,5 +1,5 @@
 class DashboardElement < ActiveRecord::Base
-  attr_accessible :top, :left, :width, :height
+  # attr_accessible :top, :left, :width, :height
   belongs_to :chart
   belongs_to :dashboard
 

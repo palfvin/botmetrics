@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130919192750) do
+ActiveRecord::Schema.define(version: 20131020231824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20130919192750) do
     t.text     "javascript"
     t.integer  "user_id"
     t.string   "name"
-    t.text     "data"
+    t.integer  "table_id"
   end
 
   create_table "dashboard_elements", force: true do |t|

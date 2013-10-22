@@ -6,15 +6,18 @@ require 'ostruct'
 
 
 class Chart < ActiveRecord::Base
-  attr_accessible :options, :data_source, :javascript, :name
+  # attr_accessible :options, :data_source, :javascript, :name
   before_save :update_javascript
+  before_save :sync_table_id_and_data_source
   belongs_to :user
   has_many :dashboard_element, dependent: :destroy
 
   validates :user_id, presence: true
 
   def refresh
-    self.data = Table.get_table_info(data_source)[:rows]
+    self.javascript = nil
+    update_javascript
+    save
   end
 
   def javascript_plus
@@ -42,6 +45,17 @@ class Chart < ActiveRecord::Base
 
   def default_to_google_source
     self.data_source = "Google(#{data_source})" if /^[A-Za-z0-9]+$/ =~ data_source
+  end
+
+  private
+
+  def sync_table_id_and_data_source
+    if self.table_id.nil? && /Table\((\d+)\)/ =~ self.data_source
+      self.table_id = $1.to_i
+    end
+    if !self.table_id.nil? && self.data_source.blank?
+      self.data_source = "Table(#{self.table_id})"
+    end
   end
 
 end

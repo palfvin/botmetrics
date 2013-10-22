@@ -30,6 +30,8 @@ class ChartScript
 
   def date(date_string)
     DateTime.parse(date_string, '%Y/%m/%d')
+  rescue
+    puts "Can't parse #{date_string}"
   end
 
   def pivot_js(options)

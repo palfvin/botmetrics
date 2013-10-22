@@ -1,9 +1,9 @@
-<% if @skip_footer && !@skip_footer %>  <!-- Not using for now -->
+<% if false || @skip_footer && !@skip_footer %>  <!-- Not using for now -->
 <footer>
   <nav class="round">
     <ul>
       <li><%= link_to "About", about_path %></li>
-      <li><%= link_to "Contact", contact_path %></li>
+      <li><%= edit_user_path(nil) %><li>
     </ul>
   </nav>
 </footer>

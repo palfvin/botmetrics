@@ -3,7 +3,7 @@ class ChartsController < ApplicationController
   before_filter :set_chart_and_require_authorization, only: [:edit, :update, :show, :destroy]
 
   def create
-    @chart = current_user.charts.build(params[:chart])
+    @chart = current_user.charts.build(chart_params)
     if @chart.save
       flash[:success] = "Chart created"
       redirect_to @chart
@@ -31,7 +31,7 @@ class ChartsController < ApplicationController
   end
 
   def update
-    @chart.update_attributes(params[:chart])
+    @chart.update_attributes(chart_params)
     if @chart.save
       flash[:success] = "Chart updated"
       redirect_to @chart
@@ -42,6 +42,10 @@ class ChartsController < ApplicationController
   end
 
   private
+
+  def chart_params
+    params.require(:chart).permit(:name, :data_source, :options, :javascript)
+  end
 
   def set_chart_and_require_authorization
     @chart = Chart.find(params[:id])

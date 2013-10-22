@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'rails'
-gem 'protected_attributes'
+# gem 'protected_attributes'
 gem 'rake'
 gem 'nokogiri'
 gem 'sass-rails'

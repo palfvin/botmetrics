@@ -45,6 +45,37 @@ class PivotTable
 
   def pivot(options)
     @options = PIVOT_DEFAULTS.merge(options)
+    if @options[:aggregator].is_a?(Array)
+      pivot_series
+    else pivot_individual
+    end
+  end
+
+  def pivot_series
+    pivots = []
+    aggregators = @options[:aggregator]
+    aggregators.each_with_index do |aggregator, index|
+      @options[:aggregator] = aggregator
+      return(aggregate_pivots(pivots)) if index == aggregators.length-1
+      pivots[index] = pivot_individual
+    end
+  end
+
+  def aggregate_pivots(pivots)
+    table = PivotTable.copy_table_headers(pivots[0])
+    (1...table.length).each do |row_index|
+      (1...table[0].length).each do |col_index|
+        table[row_index][col_index] = aggregate_array(pivots.collect {|pivot| pivot[row_index][col_index]})
+      end
+    end
+    table
+  end
+
+  def self.copy_table_headers(table)
+    result = [table[0]]+table[1..-1].collect {|row| [row[0]]}
+  end
+
+  def pivot_individual
     set_up_headers
     header_row+@row_headers.collect {|row_val| data_row(row_val)}
   end
@@ -63,7 +94,17 @@ class PivotTable
     vals = []
     data_rows.each {|row|
       vals << get(row, val_accessor) if get(row, row_accessor)==row_val and get(row,col_accessor)==col_val}
-    self.send(@options[:aggregator].to_sym, vals) unless vals.length == 0
+    aggregate_array(vals) unless vals.length == 0
+  end
+
+  def aggregate_array(array)
+    case aggregator = @options[:aggregator]
+    when Symbol
+      self.send(@options[:aggregator], array)
+    when Proc
+      aggregator.(array)
+    else raise "Invalid aggregator"
+    end
   end
 
   def corner_label
@@ -120,5 +161,3 @@ class PivotTable
   end
 
 end
-
-

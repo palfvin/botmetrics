@@ -1,9 +1,11 @@
 class Table < ActiveRecord::Base
-  attr_accessible :data_source, :data, :name
-  belongs_to :user
+  # attr_accessible :data_source, :data, :name
+  belongs_to :user, -> {users.id>6}
   before_save :get_and_save_data
+  after_save :refresh_charts
   serialize :data, Array
   validates_uniqueness_of :name
+  has_many :charts
 
   validates :user_id, presence: true
 
@@ -31,6 +33,12 @@ class Table < ActiveRecord::Base
       rows, title = table.data, table.name
     end
     {rows: rows, title: title}
+  end
+
+  private
+
+  def refresh_charts
+    self.charts.to_a.each {|chart| chart.refresh}
   end
 
 end

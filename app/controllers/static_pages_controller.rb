@@ -3,7 +3,6 @@ class StaticPagesController < ApplicationController
   end
 
   def home
-  	# binding.pry
     if current_user
       redirect_to charts_user_path(current_user)
     end

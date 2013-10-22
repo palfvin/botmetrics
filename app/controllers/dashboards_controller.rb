@@ -17,7 +17,7 @@ class DashboardsController < ApplicationController
   end
 
   def create
-    @dashboard = current_user.dashboards.build(params[:dashboard])
+    @dashboard = current_user.dashboards.build(dashboard_params)
     if @dashboard.save
       redirect_to @dashboard, notice: "Successfully created dashboard."
     else
@@ -26,7 +26,7 @@ class DashboardsController < ApplicationController
   end
 
   def update
-    if @dashboard.update_attributes(params[:dashboard])
+    if @dashboard.update_attributes(dashboard_params)
       redirect_to @dashboard, notice: "Successfully updated dashboard."
     else
       render :edit
@@ -44,4 +44,7 @@ class DashboardsController < ApplicationController
     current_user && current_user.id == @dashboard.user_id
   end
 
+  def dashboard_params
+    params.require(:dashboard).permit(:name, :description, :chart_ids => [])
+  end
 end

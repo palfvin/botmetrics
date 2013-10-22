@@ -4,7 +4,7 @@ class TablesController < ApplicationController
   before_filter :convert_data_string_to_JSON, only: [:create, :update]
 
   def create
-    @table= current_user.tables.build(params[:table])
+    @table= current_user.tables.build(table_params)
     if @table.save
       flash[:success] = "Table created"
       redirect_to @table
@@ -25,8 +25,8 @@ class TablesController < ApplicationController
   end
 
   def update
-    @table.update_attributes(params[:table])
-    if @table.save
+    @table.update_attributes(table_params)
+    if @table.save!
       flash[:success] = "Table updated"
       redirect_to @table
     else
@@ -35,6 +35,23 @@ class TablesController < ApplicationController
   end
 
   private
+
+  def table_params
+    strong_params = params.require(:table).permit(:name, :data_source)
+    if (p = params[:table]) && self.class.valid_data?(p[:data])
+      strong_params[:data] = p[:data]
+    end
+    strong_params
+  end
+
+  def self.valid_data?(rows)
+    return false unless rows.class == Array
+    rows.each do |row|
+      return false unless row.class == Array
+      row.each {|e| return false unless [String, Fixnum, Float].include? e.class}
+    end
+    true
+  end
 
   def set_table_and_require_authorization
     @table = Table.find(params[:id])

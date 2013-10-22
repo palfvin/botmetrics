@@ -124,4 +124,33 @@ describe PivotTable do
     pt.unpivot.should == unpivoted_table
   end
 
+  it "should pivot a table with a lambda count" do
+    pt = PivotTable.new(symbol_input_table*2)
+    pivoted_table = [
+      [nil, :c1, :c2],
+      [:r1, 2, 2],
+      [:r2, 2, 2]]
+    pt.pivot(headerless_options_with(-> (array) {array.count})).should == pivoted_table
+  end
+
+  it "should pivot a table with an array of aggregations" do
+    pt = PivotTable.new(symbol_input_table*2)
+    pivoted_table = [
+      [nil, :c1, :c2],
+      [:r1, 6, 6],
+      [:r2, 6, 6]]
+    aggregator = ->(arr) {arr.inject(:+)}
+    pt.pivot(headerless_options_with([:count, :count, :count, aggregator])).should == pivoted_table
+  end
+
+  it "should pivot a table with an array of aggregations" do
+    pt = PivotTable.new(symbol_input_table*2)
+    pivoted_table = [
+      [nil, :c1, :c2],
+      [:r1, 6, 6],
+      [:r2, 6, 6]]
+    aggregator = :sum
+    pt.pivot(headerless_options_with([:count, :count, :count, aggregator])).should == pivoted_table
+  end
+
 end

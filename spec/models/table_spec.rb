@@ -3,12 +3,9 @@ require 'spec_helper'
 describe Table do
 
   let(:user) { FactoryGirl.create(:user) }
-  before do
-    @table = user.tables.build(
-      data_source: 'foo')
-  end
+  let(:table) {user.tables.create()}
 
-  subject { @table }
+  subject { table }
 
   it { should respond_to(:data_source) }
   it { should respond_to(:data) }
@@ -16,17 +13,17 @@ describe Table do
   it { should respond_to(:user_id) }
 
   describe "when user_id is not present" do
-    before { @table.user_id = nil }
+    before { table.user_id = nil }
     it { should_not be_valid}
   end
 
-  describe "acessible attributes" do
-    it "should not allow access to user_id" do
-      expect do
-        Table.new(user_id: user.id)
-      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-  end
+  # describe "acessible attributes" do
+  #   it "should not allow access to user_id" do
+  #     expect do
+  #       Table.new(user_id: user.id)
+  #     end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #   end
+  # end
 
   it "should serialize data submitted" do
     table = user.tables.create(data: base_data_sample[:data])
@@ -46,6 +43,21 @@ describe Table do
     expect(table2.data).to eq("otherdata")
     table2.refresh
     expect(table2.data).to eq(base_data_sample[:data])
+  end
+
+  context "with dependent charts" do
+    let!(:chart1) {user.charts.create(table_id: table.id)}
+    let!(:chart2) {user.charts.create(table_id: table.id)}
+    it "should refresh charts when table is updated" do
+      table.reload
+      table.data = base_data_sample[:data]
+      before_save_time = Time.now
+      table.save
+      [chart1, chart2].each do |chart|
+        chart.reload
+        expect(chart.updated_at).to be > before_save_time
+      end
+    end
   end
 
 end
