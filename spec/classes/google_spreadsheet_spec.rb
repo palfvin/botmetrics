@@ -16,7 +16,8 @@ describe GoogleSpreadsheet do
     context 'when title is not given' do
 
       it 'should return title and rows' do
-        @google_drive.stub_chain(:login, :spreadsheet_by_key, :worksheets, :[]).and_return(@worksheet);
+        @google_drive.stub_chain(:login, :spreadsheet_by_key, :worksheets, :[]).and_return(@worksheet)
+        expect(@google_drive).to receive_message_chain(:login, :spreadsheet_by_key, :worksheets, :[]).and_return(@worksheet) if false
         @worksheet.stub(:title).and_return('First Sheet')
         @worksheet.stub(:rows).and_return(google_drive_rows)
         google_spreadsheet = GoogleSpreadsheet.new(key, nil, @google_drive)
@@ -29,7 +30,8 @@ describe GoogleSpreadsheet do
       let(:title) { 'Second Sheet' }
 
       it 'should return title and rows' do
-        @google_drive.stub_chain(:login, :spreadsheet_by_key, :worksheet_by_title).and_return(@worksheet);
+        @google_drive.stub_chain(:login, :spreadsheet_by_key, :worksheet_by_title).and_return(@worksheet)
+        expect(@google_drive).to receive_message_chain(:login, :spreadsheet_by_key, :worksheet_by_title).and_return(@worksheet) if false
         @worksheet.stub(:title).and_return(title)
         @worksheet.stub(:rows).and_return(google_drive_rows)
         google_spreadsheet = GoogleSpreadsheet.new(key, title, @google_drive)

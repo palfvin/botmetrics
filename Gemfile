@@ -24,11 +24,14 @@ gem 'coffee-script'
 gem 'therubyracer', :require => 'v8'
 gem 'underscore-rails'
 gem 'date_easter'
+gem 'google-api-client'
 
 group :development, :test do
   gem 'pry'
-  gem 'rspec-rails'
-  gem 'guard-rspec'
+  gem 'pry-stack_explorer'
+  gem 'pry-debugger'
+  gem 'rspec-rails', '~> 3.0.0.beta'
+#  gem 'guard-rspec'
   gem 'guard-spork'
   gem 'spork-rails', :git => 'https://github.com/sporkrb/spork-rails'
   gem 'shoulda-matchers'
@@ -45,7 +48,7 @@ end
 
 group :test do
   gem 'simplecov', require: false
-  gem 'capybara'
+  gem 'capybara', '~> 2.2.0.beta'
   gem 'factory_girl_rails'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'

@@ -25,7 +25,6 @@ class Chart < ActiveRecord::Base
   end
 
   def update_javascript
-    return if !javascript.blank?
     table_info = if data_source.blank? then {rows: nil, title: ""}
       else
         default_to_google_source

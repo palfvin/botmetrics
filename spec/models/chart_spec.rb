@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require 'rspec'
-
 describe Chart do
 
   let(:user) { FactoryGirl.create(:user) }
@@ -37,9 +35,5 @@ describe Chart do
     chart.javascript = "[\"?function () {foo}?function\"]"
     expect(chart.javascript_plus).to  eql("[function () {foo}]")
   end
-
-  # it "should unquote JavaScript functions" do
-  #   chart.javascript = "{\"a\": 1, b: \"function () {}}"
-  #   chart.javascript_plus = "{a: 1, b: function () {\"test\"}
 
 end

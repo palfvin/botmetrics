@@ -1,6 +1,6 @@
 class Table < ActiveRecord::Base
   # attr_accessible :data_source, :data, :name
-  belongs_to :user, -> {users.id>6}
+  belongs_to :user
   before_save :get_and_save_data
   after_save :refresh_charts
   serialize :data, Array
