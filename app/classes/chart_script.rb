@@ -87,7 +87,9 @@ class ChartScript
       rescue => exception
         trace = exception.backtrace
         last_stack_position = trace.index { |s| /^\(eval\):\d+:in `interpret'$/ =~ s } || 1
-        raise "Error in user code: #{trace[1..last_stack_position]}"
+        puts "User error: #{exception.inspect}"
+        puts "Backtrace: #{trace[1..last_stack_position]}"
+        raise "Error in user code"
       end
     end
     self; end
