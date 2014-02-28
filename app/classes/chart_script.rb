@@ -82,7 +82,13 @@ class ChartScript
     elsif string =~ /\A#/
       interpret_js(CoffeeScript::compile(string))
     else
-      eval(string)
+      begin
+        eval(string)
+      rescue => exception
+        trace = exception.backtrace
+        last_stack_position = trace.index { |s| /^\(eval\):\d+:in `interpret'$/ =~ s } || 1
+        raise "Error in user code: #{trace[1..last_stack_position]}"
+      end
     end
     self; end
 
