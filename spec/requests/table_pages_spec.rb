@@ -12,12 +12,12 @@ describe "tables page" do
 
   it "for index list the names of the user's tables" do
     visit tables_user_path(@user)
-    page.should have_content('Table 1')
+    expect(page).to have_content('Table 1')
   end
 
   it "for show displays the table name and HTML table contents" do
     visit table_path(@table)
-    page.should have_content('Table 1')
+    expect(page).to have_content('Table 1')
   end
 
   context "edit" do
@@ -25,14 +25,14 @@ describe "tables page" do
     before {visit edit_table_path(@table)}
 
     it "displays the name field" do
-      page.should have_field('Name')
+      expect(page).to have_field('Name')
     end
 
     it "lets you change the data value" do
       fill_in "Data", with: "[[4, 5]]"
       click_on 'Save changes'
       @table.reload
-      @table.data.should eql([[4,5]])
+      expect(@table.data).to eql([[4,5]])
     end
 
   end
@@ -44,7 +44,7 @@ describe "tables page" do
 
     it "displays the name field on the create page" do
       visit new_table_path
-      page.should have_field('Name')
+      expect(page).to have_field('Name')
     end
 
     context "creating new table" do

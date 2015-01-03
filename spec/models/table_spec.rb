@@ -39,8 +39,8 @@ describe Table do
 
   it "should refresh data on request" do
     table1 = user.tables.create(data: base_data_sample[:data])
-    table2 = user.tables.create(data_source: "Table(#{table1.id})", data: "otherdata")
-    expect(table2.data).to eq("otherdata")
+    table2 = user.tables.create(data_source: "Table(#{table1.id})", data: ["otherdata"])
+    expect(table2.data).to eq(["otherdata"])
     table2.refresh
     expect(table2.data).to eq(base_data_sample[:data])
   end

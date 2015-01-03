@@ -18,19 +18,19 @@ describe "dashboards/show.html.erb" do
 
   it "displays the My Dashboards title" do
     visit dashboards_user_path(@user)
-    page.should have_content('My Dashboards')
+    expect(page).to have_content('My Dashboards')
   end
 
 
   it "displays the dashboards owned by the user" do
     visit dashboards_user_path(@user)
-    @dashboards.each {|dashboard| page.should have_content(dashboard.name) }
+    @dashboards.each {|dashboard| expect(page).to have_content(dashboard.name) }
   end
 
   it "displays the dashboard name" do
     visit dashboard_path(@dashboard)
-    page.should have_content(@dashboard.name)
-    page.should have_content(@dashboard.description)
+    expect(page).to have_content(@dashboard.name)
+    expect(page).to have_content(@dashboard.description)
   end
 
   context "creating a nwe dashboard" do
@@ -39,12 +39,12 @@ describe "dashboards/show.html.erb" do
     let(:click) { click_link 'Create Dashboard' }
 
     it "shows Create Dashboard link" do
-      page.should have_content("Create Dashboard")
+      expect(page).to have_content("Create Dashboard")
     end
 
     it "clicking takes you to the new_dashboard_path" do
       click
-      current_path.should == new_dashboard_path
+      expect(current_path).to eq new_dashboard_path
     end
 
     it "lets you create a new dashboard with a chart" do
@@ -54,7 +54,7 @@ describe "dashboards/show.html.erb" do
       check chart_name
       click_button 'Create Dashboard'
       click_link 'New Dashboard'
-      page.should have_checked_field(chart_name)
+      expect(page).to have_checked_field(chart_name)
     end
 
   end

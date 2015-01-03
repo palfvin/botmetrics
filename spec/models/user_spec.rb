@@ -26,7 +26,7 @@ describe User do
 
     it "should destroy associated charts" do
       charts = @user.charts
-      charts.should_not be_empty
+      expect(charts).not_to be_empty
       @user.destroy
       charts.each do |chart|
         Chart.find_by_id(chart.id).should be_nil

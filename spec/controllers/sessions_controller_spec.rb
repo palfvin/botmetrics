@@ -6,10 +6,10 @@ describe SessionsController do
     context "with a user not on the white list" do
       it "redirects to the root page with a warning and doesn't establisht the session" do
         user = FactoryGirl.create(:user, email: 'otheruser@gmail.com')
-        User.should_receive(:from_omniauth).and_return(user)
+        expect(User).to receive(:from_omniauth).and_return(user)
         post :create
-        session[:user_id].should be_nil
-        response.should redirect_to root_path
+        expect(session[:user_id]).to be_nil
+        expect(response).to redirect_to root_path
       end
     end
 

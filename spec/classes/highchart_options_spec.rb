@@ -11,7 +11,7 @@ describe HighchartOptions do
   subject {@highchart_options}
 
   it 'should create the expected options' do
-    @highchart_options.options.should == {
+    expect(@highchart_options.options).to eq({
         title: {
             text: 'Fruit Consumption'
         },
@@ -29,7 +29,7 @@ describe HighchartOptions do
             name: 'John',
             data: [5, 7, 3]
         }]
-    }
+    })
   end
 
 end

@@ -9,7 +9,7 @@ describe "Static Pages" do
 
     it "should have herald" do
       herald = page.find('h1')
-      herald.should have_content('Track your world!')
+      expect(herald).to have_content('Track your world!')
     end
 
     describe "after login" do

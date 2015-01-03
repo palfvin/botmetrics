@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   before_create :create_remember_token
 
   def self.from_omniauth(auth)
-    if user = where(auth.slice(:provider, :uid)).first
+    if user = where(provider: auth.provider, uid: auth.uid).first_or_create
       user.update_attributes({name: auth[:info][:name], email: auth[:info][:email]})
       user
     else

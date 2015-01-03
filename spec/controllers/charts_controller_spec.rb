@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChartsController do
+describe ChartsController, type: :feature do
 	let(:user) {FactoryGirl.create(:user)}
 	before {sign_in user}
 	it {

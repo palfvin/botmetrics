@@ -4,8 +4,21 @@ class GoogleSpreadsheet
 
   attr_reader :title, :rows
 
-  def initialize(key, title = nil, source = GoogleDrive)
-    session = source.login(ENV['GOOGLE_NAME'], ENV['GOOGLE_PASSWORD'])
+  def initialize(key, title = nil, drive_client: GoogleDrive, api_client: Google::APIClient, auth_client: Signet::Oauth2::Client)
+    client = api_client.new(application_name: 'Botmetrics', application_version: '0.0.0')
+    signing_key = api_client.KeyUtils.load_from_pkcs12('/Users/palfvin/Downloads/Botmetrics-d147da646801.p12', 'notasecret')
+    client.authorization = auth_client.new(
+      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+      audience: 'https://accounts.google.com/o/oauth2/token',
+      scope: 'https://spreadsheets.google.com/feeds https://www.googleapis.com/auth/drive.readonly',
+      issuer: '297943685807-cabtsqb10ctf8d1aa0l892rntb9vt6ta@developer.gserviceaccount.com',
+      signing_key: signing_key)
+    auth = client.authorization
+    auth.fetch_access_token!
+    access_token = auth.access_token
+
+    # Creates a session.
+    session = drive_client.login_with_oauth(access_token)
     spreadsheet = session.spreadsheet_by_key(key)
     worksheet = title ? spreadsheet.worksheet_by_title(title) : spreadsheet.worksheets[0]
     @title = worksheet.title

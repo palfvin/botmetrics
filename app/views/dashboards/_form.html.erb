@@ -1,4 +1,4 @@
-<%= form_for(@dashboard) do |f| %>
+<%= bootstrap_form_for(@dashboard) do |f| %>
   <% if @dashboard.errors.any? %>
     <div class="error_messages">
       <h2><%= pluralize(@dashboard.errors.count, "error") %> prohibited this dashboard from being saved:</h2>
@@ -13,9 +13,7 @@
 
   <div class="field">
     <br>
-    <%= f.label 'Dashboard name', :style => :bold %>
     <%= f.text_field :name %><br>
-    <%= f.label 'Dashboard description', :style => :bold %>
     <%= f.text_field :description %><br>
   </div>
   

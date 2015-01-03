@@ -11,27 +11,27 @@ describe "chart pages" do
 
   it "for show displays the chart name" do
     visit chart_path(chart)
-    page.should have_title('Chart 1')
+    expect(page).to have_title('Chart 1')
   end
 
   it "for show displays the edit link" do
     visit chart_path(chart)
-    page.should have_link('Edit')
+    expect(page).to have_link('Edit')
   end
 
   it "for show displays the delete link" do
     visit chart_path(chart)
-    page.should have_link('Delete')
+    expect(page).to have_link('Delete')
   end
 
   it "for edit displays the name field" do
     visit edit_chart_path(chart)
-    page.should have_field('chart_name')
+    expect(page).to have_field('chart_name')
   end
 
   it "for create displays the name field" do
     visit new_chart_path
-    page.should have_field('Name')
+    expect(page).to have_field('Name')
   end
 
   describe "for create" do
@@ -40,7 +40,7 @@ describe "chart pages" do
       visit new_chart_path
       fill_in 'Name', with: 'My Chart'
       click_button 'Create my chart'
-      page.should have_content('Chart created')
+      expect(page).to have_content('Chart created')
     end
 
     describe "with a data_source" do
@@ -51,8 +51,8 @@ describe "chart pages" do
           fill_in 'chart_data_source', with: data_source[input]
           click_button 'Create my chart'
           click_link 'Edit'
-          page.should have_field('chart_data_source', with: data_source[:data_source])
-          page.should have_field('chart_javascript', with: text_area_adjustment(data_source[:javascript]))
+          expect(page).to have_field('chart_data_source', with: data_source[:data_source])
+          expect(page).to have_field('chart_javascript', with: text_area_adjustment(data_source[:javascript]))
         end
       end
 

@@ -51,7 +51,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, :a, :b],
       [:r2, :c, :d]]
-    pt.pivot(headerless_options).should == pivoted_table
+    expect(pt.pivot(headerless_options)).to eq pivoted_table
   end
 
   it "should pivot a basic 2x3 table with a header" do
@@ -60,7 +60,7 @@ describe PivotTable do
       [corner_result, :c1, :c2],
       [:r1, :a, :b],
       [:r2, :c, :d]]
-    pt.pivot(header_options).should == pivoted_table
+    expect(pt.pivot(header_options)).to eq pivoted_table
   end
 
   it "should pivot a basic 2x3 table with a header and lambda functions" do
@@ -69,7 +69,7 @@ describe PivotTable do
       [corner_result_lambda, :c1, :c2],
       [:r1, :a, :b],
       [:r2, :c, :d]]
-    pt.pivot(header_options_with_lambdas).should == pivoted_table
+    expect(pt.pivot(header_options_with_lambdas)).to eq pivoted_table
   end
 
   it "should pivot a table with count" do
@@ -78,7 +78,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, 2, 2],
       [:r2, 2, 2]]
-    pt.pivot(headerless_options_with(:count)).should == pivoted_table
+    expect(pt.pivot(headerless_options_with(:count))).to eq pivoted_table
   end
 
   it "should pivot a table with sum" do
@@ -87,7 +87,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, 2, 4],
       [:r2, 6, nil]]
-    pt.pivot(headerless_options_with(:sum)).should == pivoted_table
+    expect(pt.pivot(headerless_options_with(:sum))).to eq pivoted_table
   end
 
   it "should pivot a table with average" do
@@ -96,7 +96,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, 1, 2],
       [:r2, 3, nil]]
-    pt.pivot(headerless_options_with(:average)).should == pivoted_table
+    expect(pt.pivot(headerless_options_with(:average))).to eq pivoted_table
   end
 
   it "should return nil for average of no data rather than generate, avoiding divide-by-zero error" do
@@ -105,7 +105,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, 1, 2],
       [:r2, 3, nil]]
-    pt.pivot(headerless_options_with(:average)).should == pivoted_table
+    expect(pt.pivot(headerless_options_with(:average))).to eq pivoted_table
   end
 
   it "should sort the column headers in reverse alphabetical order if I specify that" do
@@ -116,12 +116,12 @@ describe PivotTable do
       [nil, :c2, :c1],
       [:r1, :b, :a],
       [:r2, :d, :c]]
-    pt.pivot(headerless_options.merge({col_sort_by: column_sort})).should == pivoted_table
+    expect(pt.pivot(headerless_options.merge({col_sort_by: column_sort}))).to eq pivoted_table
   end
 
   it "should unpivot a table" do
     pt = PivotTable.new(pivoted_table)
-    pt.unpivot.should == unpivoted_table
+    expect(pt.unpivot).to eq unpivoted_table
   end
 
   it "should pivot a table with a lambda count" do
@@ -130,7 +130,7 @@ describe PivotTable do
       [nil, :c1, :c2],
       [:r1, 2, 2],
       [:r2, 2, 2]]
-    pt.pivot(headerless_options_with(-> (array) {array.count})).should == pivoted_table
+    expect(pt.pivot(headerless_options_with(-> (array) {array.count}))).to eq pivoted_table
   end
 
   it "should pivot a table with an array of aggregations" do
@@ -140,7 +140,7 @@ describe PivotTable do
       [:r1, 6, 6],
       [:r2, 6, 6]]
     aggregator = ->(arr) {arr.inject(:+)}
-    pt.pivot(headerless_options_with([:count, :count, :count, aggregator])).should == pivoted_table
+    expect(pt.pivot(headerless_options_with([:count, :count, :count, aggregator]))).to eq pivoted_table
   end
 
   it "should pivot a table with an array of aggregations" do
@@ -150,7 +150,7 @@ describe PivotTable do
       [:r1, 6, 6],
       [:r2, 6, 6]]
     aggregator = :sum
-    pt.pivot(headerless_options_with([:count, :count, :count, aggregator])).should == pivoted_table
+    expect(pt.pivot(headerless_options_with([:count, :count, :count, aggregator]))).to eq pivoted_table
   end
 
 end
