@@ -57,9 +57,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
-  gem 'rb-fsevent', :require => false
-  gem 'growl'
-  gem 'growl_notify'
 end
 
 group :production do
