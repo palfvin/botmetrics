@@ -6,11 +6,8 @@ describe GoogleSpreadsheet do
   describe "worksheet processing" do
     let(:key) { 'some key' }
     let(:google_drive) { double('GoogleDrive') }
-    let(:api_client) do
-      double('Api Client',
-        KeyUtils: double(load_from_pkcs12: true),
-        new: OpenStruct.new)
-    end
+    let(:api_client)  { double('ApiClient', new: OpenStruct.new) }
+    let(:decrypter) { double('RSA', new: true) }
     let(:auth_client) { double('Auth Client', new: double(access_token: true, fetch_access_token!: true)) }
     let(:expected_contents) { [["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", 1.0, '1973/02/01', 9.0], ["Joe", 3.0, 6.0, 8.0]] }
     let(:google_drive_rows) { [["Fruit Eaten", "Bananas", "Apples", "Oranges"], ["Jane", '1.0', '2/1/1973', '9.0'], ["Joe", '3.0', '6.0', '8.0']] }
@@ -19,8 +16,10 @@ describe GoogleSpreadsheet do
       GoogleSpreadsheet.new(key, title,
         drive_client: google_drive,
         api_client: api_client,
-        auth_client: auth_client)
+        auth_client: auth_client,
+        decrypter: decrypter)
     end
+    before { allow(OpenSSL::PKey::RSA).to receive(:new) }
 
     context 'when title is not given' do
       let(:title) { nil }

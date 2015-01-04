@@ -4,9 +4,9 @@ class GoogleSpreadsheet
 
   attr_reader :title, :rows
 
-  def initialize(key, title = nil, drive_client: GoogleDrive, api_client: Google::APIClient, auth_client: Signet::Oauth2::Client)
+  def initialize(key, title = nil, drive_client: GoogleDrive, api_client: Google::APIClient, auth_client: Signet::OAuth2::Client, decrypter: OpenSSL::PKey::RSA)
     client = api_client.new(application_name: 'Botmetrics', application_version: '0.0.0')
-    signing_key = api_client.KeyUtils.load_from_pkcs12('/Users/palfvin/Downloads/Botmetrics-d147da646801.p12', 'notasecret')
+    signing_key = OpenSSL::PKey::RSA.new(decrypter.new(ENV['SERVICE_ACCOUNT_SECRET_KEY'], 'notasecret'))
     client.authorization = auth_client.new(
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
       audience: 'https://accounts.google.com/o/oauth2/token',

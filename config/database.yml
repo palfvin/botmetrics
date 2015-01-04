@@ -15,7 +15,7 @@ test:
   adapter: postgresql
   encoding: unicode
   host: localhost
-  database: botmetrics_test
+  database: travis_ci_test
   pool: 5
   timeout: 5000
 
