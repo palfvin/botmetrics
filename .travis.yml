@@ -1,5 +1,5 @@
 language: ruby
 before_script:
-  - bundle exec rake test:prepare
+  - bundle exec rake db:test:prepare
 rvm:
   - 2.1.5
