@@ -1,5 +1,5 @@
 language: ruby
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
+  - rake test:prepare
 rvm:
   - 2.1.5
