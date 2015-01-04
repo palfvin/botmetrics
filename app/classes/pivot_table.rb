@@ -100,7 +100,7 @@ class PivotTable
   def aggregate_array(array)
     case aggregator = @options[:aggregator]
     when Symbol
-      self.send(@options[:aggregator], array)
+      self.send(@options[:aggregator], array.compact)
     when Proc
       aggregator.(array)
     else raise "Invalid aggregator"
