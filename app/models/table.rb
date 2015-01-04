@@ -38,7 +38,7 @@ class Table < ActiveRecord::Base
   private
 
   def refresh_charts
-    self.charts.to_a.each {|chart| chart.refresh}
+    self.charts.to_a.each {|chart| chart.refresh rescue nil}
   end
 
 end

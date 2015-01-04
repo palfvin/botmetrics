@@ -25,8 +25,8 @@ class TablesController < ApplicationController
   end
 
   def update
-    @table.update_attributes(table_params)
-    if @table.save!
+    success = @table.update_attributes(table_params)
+    if success
       flash[:success] = "Table updated"
       redirect_to @table
     else
