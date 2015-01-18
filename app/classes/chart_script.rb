@@ -68,6 +68,10 @@ class ChartScript
 
   def pivot3(obj) ; pivot2(obj) ; end
 
+  def transpose
+    @rows = rows.transpose
+  end
+
   def rows
     @rows
   end
@@ -88,7 +92,7 @@ class ChartScript
         trace = exception.backtrace
         last_stack_position = trace.index { |s| /^\(eval\):\d+:in `interpret'$/ =~ s } || 0
         puts "User error: #{exception.inspect}"
-        puts "Backtrace: #{trace[0..last_stack_position]}"
+        puts "Backtrace: #{trace}"
         raise "Error in user code"
       end
     end
