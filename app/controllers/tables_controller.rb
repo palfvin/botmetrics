@@ -1,5 +1,5 @@
 class TablesController < ApplicationController
-  before_filter :require_authentication
+  # before_filter :require_authentication
   before_filter :set_table_and_require_authorization, only: [:edit, :update, :show]
   before_filter :convert_data_string_to_JSON, only: [:create, :update]
 
