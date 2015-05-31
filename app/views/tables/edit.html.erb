@@ -4,6 +4,7 @@
     <%= bootstrap_form_for(@table) do |f| %>
       <%= render 'fields', f: f %>
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+      <%= link_to "Cancel", tables_user_path(current_user), class: "btn btn-large btn-info" %>
     <% end %>
   </div>
 </div>

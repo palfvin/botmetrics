@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.5'
+ruby '2.2.2'
 
 gem 'rails'
 # gem 'protected_attributes'
@@ -46,6 +46,7 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'jasminerice', :git => 'https://github.com/bradphelan/jasminerice.git'
   gem 'guard-jasmine'
+  gem 'dotenv-rails'
 end
 
 # Gems used only for assets and not required

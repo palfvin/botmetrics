@@ -11,54 +11,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131114232150) do
+ActiveRecord::Schema.define(version: 20150530235509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "charts", force: true do |t|
+  create_table "charts", force: :cascade do |t|
     t.string   "data_source"
     t.text     "options"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "javascript"
     t.integer  "user_id"
     t.string   "name"
     t.integer  "table_id"
   end
 
-  create_table "dashboard_elements", force: true do |t|
+  create_table "dashboard_elements", force: :cascade do |t|
     t.integer  "chart_id"
     t.integer  "dashboard_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "top"
     t.integer  "left"
     t.integer  "width"
     t.integer  "height"
   end
 
-  create_table "dashboards", force: true do |t|
+  create_table "dashboards", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
     t.string   "description"
   end
 
-  create_table "tables", force: true do |t|
+  create_table "tables", force: :cascade do |t|
     t.string   "data_source"
     t.text     "data"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
+    t.boolean  "webhook_update"
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "provider"
     t.string   "uid"
     t.string   "email"
