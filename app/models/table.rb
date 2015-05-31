@@ -26,7 +26,7 @@ class Table < ActiveRecord::Base
     type, key = $1, $2
     case type
     when 'Google'
-      spreadsheet = GoogleSpreadsheet.new(key)
+      spreadsheet = GoogleSpreadsheet.new(key:key)
       rows, title = spreadsheet.rows, spreadsheet.title
     when 'Table'
       table = self.find(key)
