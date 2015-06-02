@@ -3,5 +3,5 @@ before_script:
   - bundle exec rake db:test:prepare
 rvm:
   - 2.1.5
-webhooks:
-  url: http://a47da6be.ngrok.io/projects/e1451c84-d751-49b4-abb7-fc5bfe498f75/status
+notifications:
+  webhooks: http://a47da6be.ngrok.io/projects/e1451c84-d751-49b4-abb7-fc5bfe498f75/status
